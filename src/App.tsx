@@ -15,7 +15,7 @@ function App() {
       <ReferenceDataProvider>
         <NavBar />
         {/* <Sidebar /> */}
-        <main>
+        <main style={{ border: "1px solid red" }}>
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
             <Route path="reference" element={<Reference />} />
@@ -25,6 +25,7 @@ function App() {
             <Route path="warbands" element={<Warbands />} />
             <Route path="warbands/createWizard" element={<CreateWizard />} />
             <Route path="campaigns" element={<h1>Campaigns</h1>} />
+            <Route path="*" element={<h1>404 Page Not Found</h1>} />
           </Routes>
         </main>
       </ReferenceDataProvider>
