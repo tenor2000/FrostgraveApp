@@ -1,9 +1,5 @@
 import React from "react";
 
 export default function Nav() {
-  return (
-    <ul>
-      <li></li>
-    </ul>
-  );
+  return <h4>Sidebar</h4>;
 }

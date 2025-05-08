@@ -1,25 +1,30 @@
-import Header from "./components/Header.tsx";
-import Nav from "./components/Nav.tsx";
+import NavBar from "./components/NavBar.tsx";
+// import Sidebar from "./components/Sidebar.tsx";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
-import Reference from "./pages/Reference.tsx";
-import Warbands from "./pages/Warbands.tsx";
-import NewWizard from "./pages/NewWizard.tsx";
+import Reference from "./pages/reference/Reference.tsx";
+import Warbands from "./pages/warbands/Warbands.tsx";
+import CreateWizard from "./pages/warbands/CreateWizard.tsx";
+import Spells from "./pages/spells/Spells.tsx";
 
 function App() {
   return (
     <>
-      <Header />
-      <Nav />
-      <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
-        <Route path="/reference" element={<Reference />} />
-        <Route path="/spells" element={<h1>Spells</h1>} />
-        <Route path="/warbands" element={<Warbands />} />
-        <Route path="/warbands/newWizard" element={<NewWizard />} />
-        <Route path="/documentation" element={<h1>Docs</h1>} />
-      </Routes>
+      <NavBar />
+      {/* <Sidebar /> */}
+      <main>
+        <Routes>
+          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="reference" element={<Reference />} />
+          <Route path="reference/:type" element={<Reference />} />
+          <Route path="spells" element={<Spells />} />
+          <Route path="spells/:school" element={<Spells />} />
+          <Route path="warbands" element={<Warbands />} />
+          <Route path="warbands/createWizard" element={<CreateWizard />} />
+          <Route path="campaigns" element={<h1>Campaigns</h1>} />
+        </Routes>
+      </main>
     </>
   );
 }
