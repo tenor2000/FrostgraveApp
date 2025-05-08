@@ -9,9 +9,9 @@ export const ReferenceDataProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("Fetching Reference Data...");
     getReferenceData()
       .then((res) => {
-        console.log(res.data);
         setReferenceData(res.data);
         setLoading(false);
       })
