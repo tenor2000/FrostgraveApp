@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
             <Route path="reference" element={<Reference />} />
-            <Route path="reference/:type" element={<Reference />} />
+            <Route path="reference/:refType" element={<Reference />} />
             <Route path="spells" element={<Spells />} />
             <Route path="spells/:school" element={<Spells />} />
             <Route path="warbands" element={<Warbands />} />
