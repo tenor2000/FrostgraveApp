@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Pagination, Stack } from "@mui/material";
 import SearchBar from "../../components/SearchBar";
 import BasicAccordian from "../../components/BasicAccordian";
 import BasicSpellCard from "./BasicSpellCard";
@@ -19,6 +19,7 @@ type Spell = {
 
 export default function Reference() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
   const nav = useNavigate();
   const { school } = useParams<{ school: string }>();
   const { referenceData, loading, error } = useReferenceData();
@@ -55,14 +56,50 @@ export default function Reference() {
     );
   }
 
+  // Pagination
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const itemsPerPage = 10;
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedSpells = spellData.slice(startIndex, endIndex);
+
   return (
     <>
-      <Box>
-        <h2>Spells</h2>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: { xs: "center", md: "space-evenly" },
+          alignItems: "center",
+          gap: 2,
+          flexWrap: "wrap",
+          mb: 2,
+        }}
+      >
+        {school ? (
+          <h2>Spellbook: {school[0].toUpperCase() + school.slice(1)}</h2>
+        ) : (
+          <h2>Spellbook: All Schools</h2>
+        )}
         <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} />
+        <Stack spacing={2}>
+          <Pagination
+            count={Math.ceil(spellData.length / itemsPerPage)}
+            page={page}
+            onChange={handlePageChange}
+            variant="outlined"
+            shape="rounded"
+          />
+        </Stack>
       </Box>
       <Box>
-        {spellData.map((spell: Spell) => (
+        {paginatedSpells.map((spell: Spell) => (
           <BasicAccordian title={spell.name} key={spell._id}>
             <BasicSpellCard spellObj={spell} titlebar={false} />
           </BasicAccordian>
