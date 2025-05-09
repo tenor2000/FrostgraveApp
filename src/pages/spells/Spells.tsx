@@ -1,8 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
-import { Box, Pagination, Stack, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Pagination,
+  Stack,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import SearchBar from "../../components/SearchBar";
 import BasicAccordian from "../../components/BasicAccordian";
 import BasicSpellCard from "./BasicSpellCard";
@@ -19,6 +27,7 @@ type Spell = {
 
 export default function Spells() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [tabValue, setTabValue] = useState(0);
   const [page, setPage] = useState(1);
   const nav = useNavigate();
   const { school } = useParams<{ school: string }>();
@@ -41,7 +50,11 @@ export default function Spells() {
 
   // Getting school names from the list of spells
   const schooltypes = [
-    ...new Set(spellData.map((spell: Spell) => spell.school.toLowerCase())),
+    ...new Set(
+      spellData
+        .map((spell: Spell) => spell.school.toLowerCase())
+        .sort((a, b) => a.localeCompare(b))
+    ),
   ];
 
   // Making sure param is valid school name
@@ -61,6 +74,11 @@ export default function Spells() {
     );
   }
 
+  // Tab Navigation
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
   // Pagination
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -69,13 +87,41 @@ export default function Spells() {
     setPage(value);
   };
 
-  const itemsPerPage = isMobile ? 8 : 10;
+  const itemsPerPage = isMobile ? 6 : 8;
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedSpells = spellData.slice(startIndex, endIndex);
 
   return (
     <>
+      <Box sx={{ display: { xs: "none", md: "block" } }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={tabValue}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="spell school tabs"
+            allowScrollButtonsMobile
+          >
+            <Tab
+              component={Link}
+              to="/spells"
+              label="All"
+              sx={{ fontWeight: "bold", minWidth: "100px" }}
+            />
+            {schooltypes.map((school: string) => (
+              <Tab
+                key={school}
+                component={Link}
+                onClick={() => setPage(1)}
+                to={`/spells/${school}`}
+                label={school}
+              />
+            ))}
+          </Tabs>
+        </Box>
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -87,25 +133,22 @@ export default function Spells() {
           mb: 2,
         }}
       >
-        {school ? (
-          <h2>Spellbook: {school[0].toUpperCase() + school.slice(1)}</h2>
-        ) : (
-          <h2>Spellbook: All Schools</h2>
-        )}
         <SearchBar
           searchText={searchTerm}
           setSearchText={setSearchTerm}
           setPaginate={setPage}
         />
-        <Stack spacing={2}>
-          <Pagination
-            count={Math.ceil(spellData.length / itemsPerPage)}
-            page={page}
-            onChange={handlePageChange}
-            variant="outlined"
-            shape="rounded"
-          />
-        </Stack>
+        {itemsPerPage < spellData.length && (
+          <Stack spacing={2}>
+            <Pagination
+              count={Math.ceil(spellData.length / itemsPerPage)}
+              page={page}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+            />
+          </Stack>
+        )}
       </Box>
       <Box>
         {paginatedSpells.map((spell: Spell) => (
