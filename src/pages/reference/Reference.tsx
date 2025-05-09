@@ -3,6 +3,23 @@ import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
 import { Box, Tab, Tabs, useMediaQuery, useTheme } from "@mui/material";
+import ArmorComponent from "./Armor";
+import CreaturesComponent from "./Creature";
+import SoldiersComponent from "./Soldier";
+import WeaponsComponent from "./Weapon";
+import LocationComponent from "./Base_Location";
+import SchoolComponent from "./Magic_School";
+import ResourceComponent from "./Base_Resource";
+
+const components = {
+  armor: <ArmorComponent />,
+  creature: <CreaturesComponent />,
+  soldier: <SoldiersComponent />,
+  weapon: <WeaponsComponent />,
+  base_location: <LocationComponent />,
+  magic_school: <SchoolComponent />,
+  base_resource: <ResourceComponent />,
+};
 
 export default function Reference() {
   const [tabValue, setTabValue] = useState(0);
@@ -72,7 +89,13 @@ export default function Reference() {
           </Tabs>
         </Box>
       </Box>
-      <Box>{refType ? <Box>{refType}</Box> : <Box>Blah</Box>}</Box>
+      <Box>
+        {refType ? (
+          components[refType.split("_").slice(0, -1).join("_")]
+        ) : (
+          <Box>All</Box>
+        )}
+      </Box>
     </>
   );
 }
