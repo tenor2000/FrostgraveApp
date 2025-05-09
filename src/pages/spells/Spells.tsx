@@ -92,7 +92,11 @@ export default function Spells() {
         ) : (
           <h2>Spellbook: All Schools</h2>
         )}
-        <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} />
+        <SearchBar
+          searchText={searchTerm}
+          setSearchText={setSearchTerm}
+          setPaginate={setPage}
+        />
         <Stack spacing={2}>
           <Pagination
             count={Math.ceil(spellData.length / itemsPerPage)}

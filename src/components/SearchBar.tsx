@@ -5,15 +5,18 @@ import CancelIcon from "@mui/icons-material/Cancel";
 type SearchBarProps = {
   searchText: string;
   setSearchText: (text: string) => void;
+  setPaginate: (page: number) => void;
 };
 
 export default function SearchBar({
   searchText,
   setSearchText,
+  setPaginate,
 }: SearchBarProps) {
   const handleChange = (e) => {
     const text = e.target.value;
     setSearchText(text);
+    setPaginate(1);
   };
 
   const clearSearch = () => {
