@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
-import { Box, Pagination, Stack } from "@mui/material";
+import { Box, Pagination, Stack, useMediaQuery, useTheme } from "@mui/material";
 import SearchBar from "../../components/SearchBar";
 import BasicAccordian from "../../components/BasicAccordian";
 import BasicSpellCard from "./BasicSpellCard";
@@ -17,12 +17,14 @@ type Spell = {
   description: string;
 };
 
-export default function Reference() {
+export default function Spells() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const nav = useNavigate();
   const { school } = useParams<{ school: string }>();
   const { referenceData, loading, error } = useReferenceData();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -32,14 +34,17 @@ export default function Reference() {
     return <div>Error loading data</div>;
   }
 
+  // Sorting the list of spells
   let spellData: Spell[] = referenceData.spell_data.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
 
+  // Getting school names from the list of spells
   const schooltypes = [
     ...new Set(spellData.map((spell: Spell) => spell.school.toLowerCase())),
   ];
 
+  // Making sure param is valid school name
   if (school && !schooltypes.includes(school.toLowerCase())) {
     nav("page-not-found");
   }
@@ -64,7 +69,7 @@ export default function Reference() {
     setPage(value);
   };
 
-  const itemsPerPage = 10;
+  const itemsPerPage = isMobile ? 8 : 10;
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedSpells = spellData.slice(startIndex, endIndex);
