@@ -16,6 +16,6 @@ type refDataObj = {
   }[];
 };
 
-export function getSchoolFromId(id: number, refData: refDataObj) {
+export function getSoldierFromId(id: number, refData: refDataObj) {
   return refData.soldier_data.find((soldier) => soldier.soldier_id == id);
 }
