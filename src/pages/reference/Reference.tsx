@@ -24,7 +24,7 @@ const components = {
 export default function Reference() {
   const [tabValue, setTabValue] = useState(0);
   const nav = useNavigate();
-  const { refType } = useParams<{ refType: string }>();
+  const { refType } = useParams<{ refType: string }>(); // refType comes in as '(name_of_refType)_data'
   const { referenceData, loading, error } = useReferenceData();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
