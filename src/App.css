@@ -12,17 +12,12 @@ header {
   left: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.stat-icon {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  color: inherit;
+  background-color: inherit;
 }
 
 .card {
