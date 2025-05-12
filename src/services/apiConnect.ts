@@ -7,3 +7,9 @@ export const getReferenceData = async () => {
   console.log(response);
   return response;
 };
+
+export const getUserData = async () => {
+  const response = await axios.get(`${backendUrl}/user/data`);
+  console.log(response);
+  return response;
+};
