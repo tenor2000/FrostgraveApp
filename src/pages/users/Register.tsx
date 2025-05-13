@@ -1,8 +1,9 @@
 import React, { useState, useReducer } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { useAuthData } from "../../context/AuthContext";
-import { loginAPI, getUserData } from "../../services/apiConnect";
+import { registerAPI, getUserData } from "../../services/apiConnect";
 import type { User } from "../../context/AuthContext";
 
 type NewUser = {
@@ -33,25 +34,34 @@ export default function Register() {
     });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const res = await registerAPI(newUser);
 
-    // try {
-    //   const res = await loginAPI(username, password);
-    //   console.log(res);
+      // localStorage.setItem("accessTokenFG", res.data.accessToken);
 
-    //   localStorage.setItem("accessTokenFG", res.data.accessToken);
-
-    //   const userData: User = await getUserData(res.data.accessToken);
-    //   console.log(userData);
-    //   navigate("/");
-    // } catch (err: any) {
-    //   setError(err.message);
-    // }
+      // const userData: User = await getUserData(res.data.accessToken);
+      // console.log(userData);
+      // navigate("/");
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 409) {
+          setError(err.response.data.error);
+        } else {
+          setError("Something went wrong");
+        }
+      } else {
+        setError("Unexpected error occurred");
+      }
+    }
   };
 
   return (
-    <form onSubmit={handleLogin} style={{ maxWidth: "400px", margin: "auto" }}>
+    <form
+      onSubmit={handleRegister}
+      style={{ maxWidth: "400px", margin: "auto" }}
+    >
       <h2>Register</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <Box>
@@ -85,7 +95,6 @@ export default function Register() {
           required
         />
       </Box>
-
       <Box>
         <TextField
           name="email"
@@ -99,6 +108,7 @@ export default function Register() {
       </Box>
       <Box>
         <TextField
+          type="password"
           name="password"
           label="Password"
           value={newUser.password}
@@ -110,6 +120,7 @@ export default function Register() {
       </Box>
       <Box>
         <TextField
+          type="password"
           name="confirmpw"
           label="Confirm Password"
           value={newUser.confirmpw}
