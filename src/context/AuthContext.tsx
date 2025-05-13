@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type User = {
   _id: string;
@@ -32,10 +33,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {}, [user]);
 
   const logout = () => {
     setUser(null);
+    navigate("/");
   };
 
   return (
