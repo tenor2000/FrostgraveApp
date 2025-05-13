@@ -1,15 +1,20 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { getUserData } from "../services/apiConnect";
 
-type User = {
+export type User = {
   _id: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   username: string;
   email: string;
-  avatarUrl: string;
-  createdAt: string;
-  updatedAt: string;
+  lastLogin: string;
+  role: string;
+  created: string;
+  last_modified: string;
+  profile: {
+    bio: string;
+    location: string;
+    avatar: string;
+  };
 };
 
 type AuthContextType = {
@@ -20,35 +25,14 @@ type AuthContextType = {
   error: any;
 };
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    console.log("Fetching User Data...");
-    const loadUser = async () => {
-      try {
-        const res = await axios.get("/api/user");
-        setUser(res.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err);
-        setLoading(false);
-      }
-    };
-    getUserData()
-      .then((res) => {
-        setUserData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
+  useEffect(() => {}, [user]);
 
   const logout = () => {
     setUser(null);
@@ -61,4 +45,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useUserData = () => useContext(AuthContext);
+export const useAuthData = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuthData must be used within an AuthProvider");
+  }
+  return context;
+};
