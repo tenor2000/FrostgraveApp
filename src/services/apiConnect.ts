@@ -32,3 +32,27 @@ export const loginAPI = async (username: string, password: string) => {
   console.log(response);
   return response;
 };
+
+export const registerAPI = async ({
+  firstname,
+  lastname,
+  email,
+  username,
+  password,
+}: {
+  firstname: string;
+  lastname: string;
+  email: string;
+  username: string;
+  password: string;
+}) => {
+  const response = await axios.post(`${backendUrl}/auth/register`, {
+    firstname,
+    lastname,
+    email,
+    username,
+    password,
+  });
+  console.log(response);
+  return response;
+};
