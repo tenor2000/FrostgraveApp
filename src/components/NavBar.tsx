@@ -13,9 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import { useAuthData } from "../context/AuthContext";
 
 const pages = ["Reference", "Spells", "Warbands", "Campaigns"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [
+  { page: "Profile", route: "users/profile" },
+  { page: "Dashboard", route: "users/dashboard" },
+];
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -25,6 +29,7 @@ function NavBar() {
     null
   );
 
+  const { user, logout } = useAuthData();
   const nav = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -142,11 +147,32 @@ function NavBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Guest" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {user ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user.username} src={user.avatar} />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Box sx={{ display: "flex" }}>
+                <Button
+                  onClick={() => {
+                    nav("/users/login");
+                  }}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Log In
+                </Button>
+                <Button
+                  onClick={() => {
+                    nav("/users/register");
+                  }}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Register
+                </Button>
+              </Box>
+            )}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -163,13 +189,32 @@ function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
+              {!user && (
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: "center" }}>Log In</Typography>
                 </MenuItem>
-              ))}
+              )}
+              {user &&
+                settings.map((setting) => (
+                  <MenuItem key={setting.page} onClick={handleCloseUserMenu}>
+                    <Typography
+                      sx={{ textAlign: "center" }}
+                      onClick={() => nav(setting.route)}
+                    >
+                      {setting.page}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              {user && (
+                <MenuItem
+                  onClick={() => {
+                    logout();
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Typography sx={{ textAlign: "center" }}>Log Out</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
