@@ -1,0 +1,157 @@
+import React, { useState, useReducer } from "react";
+import { Box, TextField, Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useAuthData } from "../../context/AuthContext";
+import { loginAPI, getUserData } from "../../services/apiConnect";
+import type { User } from "../../context/AuthContext";
+
+type NewUser = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmpw: string;
+};
+
+const initialState: NewUser = {
+  firstname: "",
+  lastname: "",
+  username: "",
+  email: "",
+  password: "",
+  confirmpw: "",
+};
+
+export default function Register() {
+  const [newUser, dispatch] = useReducer(newUserReducer, initialState);
+  const [error, setError] = useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: e.target.name,
+      payload: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // try {
+    //   const res = await loginAPI(username, password);
+    //   console.log(res);
+
+    //   localStorage.setItem("accessTokenFG", res.data.accessToken);
+
+    //   const userData: User = await getUserData(res.data.accessToken);
+    //   console.log(userData);
+    //   navigate("/");
+    // } catch (err: any) {
+    //   setError(err.message);
+    // }
+  };
+
+  return (
+    <form onSubmit={handleLogin} style={{ maxWidth: "400px", margin: "auto" }}>
+      <h2>Register</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <Box>
+        <TextField
+          name="firstname"
+          label="First Name"
+          value={newUser.firstname}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+        />
+      </Box>
+      <Box>
+        <TextField
+          name="lastname"
+          label="Last Name"
+          value={newUser.lastname}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+        />
+      </Box>
+      <Box>
+        <TextField
+          name="username"
+          label="Username"
+          value={newUser.username}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+          required
+        />
+      </Box>
+
+      <Box>
+        <TextField
+          name="email"
+          label="Email"
+          value={newUser.email}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+          required
+        />
+      </Box>
+      <Box>
+        <TextField
+          name="password"
+          label="Password"
+          value={newUser.password}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+          required
+        />
+      </Box>
+      <Box>
+        <TextField
+          name="confirmpw"
+          label="Confirm Password"
+          value={newUser.confirmpw}
+          onChange={handleChange}
+          margin="normal"
+          fullWidth
+          required
+        />
+      </Box>
+      <Box>
+        <p>
+          Already have an account? <Link to="/users/login">Login</Link>
+        </p>
+      </Box>
+      {/* <div>
+        <p>
+          {newUser.firstname} {newUser.lastname} {newUser.username}
+          {newUser.email} {newUser.password} {newUser.confirmpw}
+        </p>
+      </div> */}
+      <Button type="submit" variant="outlined">
+        Register
+      </Button>
+    </form>
+  );
+}
+
+function newUserReducer(state: NewUser, action: any) {
+  switch (action.type) {
+    case "firstname":
+      return { ...state, firstname: action.payload };
+    case "lastname":
+      return { ...state, lastname: action.payload };
+    case "username":
+      return { ...state, username: action.payload };
+    case "email":
+      return { ...state, email: action.payload };
+    case "password":
+      return { ...state, password: action.payload };
+    case "confirmpw":
+      return { ...state, confirmpw: action.payload };
+    default:
+      return state;
+  }
+}
