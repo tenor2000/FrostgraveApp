@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,12 +14,13 @@ import {
 import SearchBar from "../../components/SearchBar";
 import BasicAccordian from "../../components/BasicAccordian";
 import BasicSpellCard from "./BasicSpellCard";
+import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 
 type Spell = {
   _id: string;
   spell_id: number;
   name: string;
-  school: string;
+  school_id: number;
   base_cast: number;
   category: string;
   description: string;
@@ -52,7 +53,9 @@ export default function Spells() {
   const schooltypes = [
     ...new Set(
       spellData
-        .map((spell: Spell) => spell.school.toLowerCase())
+        .map((spell: Spell) =>
+          getSchoolFromId(spell.school_id, referenceData)?.name.toLowerCase()
+        )
         .sort((a, b) => a.localeCompare(b))
     ),
   ];
@@ -64,7 +67,9 @@ export default function Spells() {
 
   if (school && schooltypes.includes(school.toLowerCase())) {
     spellData = spellData.filter(
-      (spell: Spell) => spell.school.toLowerCase() === school.toLowerCase()
+      (spell: Spell) =>
+        getSchoolFromId(spell.school_id, referenceData)?.name.toLowerCase() ===
+        school.toLowerCase()
     );
   }
 
@@ -117,6 +122,7 @@ export default function Spells() {
                 onClick={() => setPage(1)}
                 to={`/spells/${school}`}
                 label={school}
+                sx={{ fontWeight: "bold", minWidth: "100px" }}
               />
             ))}
           </Tabs>
