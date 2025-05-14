@@ -7,40 +7,23 @@ import {
   Select,
   MenuItem,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import { useReducer } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 import getStoryPrompt from "../../utilFunctions/getStoryPrompt";
-
-type Wizard = {
-  user_id: string;
-  name: string;
-  wizard_class_id: number;
-  primarySpellIds: number[];
-  alignedSpellIds: number[];
-  neutralSpellIds: number[];
-  backstory: string;
-};
-
-type MagicSchool = {
-  school_id: number;
-  name: string;
-  aligned: number[];
-  neutral: number[];
-  opposed: number[];
-};
-
-type SpellType = {
-  spell_id: number;
-  name: string;
-  school_id: number;
-};
+import { postNewWizard } from "../../services/postNewWizard";
+import { useAuthData } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import type { Wizard } from "../../types/WarbandTypes";
+import type { MagicSchool, SpellType } from "../../types/ReferenceTypes";
 
 export default function NewWizardForm() {
+  const { user } = useAuthData();
+  console.log("User: ", user);
+  const { referenceData, loading, error } = useReferenceData();
   const [formData, dispatch] = useReducer(WizardFormReducer, {
-    user_id: "",
+    user_id: user?._id || "LocalStorage",
     name: "",
     wizard_class_id: 0,
     primarySpellIds: [0, 0, 0],
@@ -49,7 +32,7 @@ export default function NewWizardForm() {
     backstory: getStoryPrompt(),
   });
 
-  const { referenceData, loading, error } = useReferenceData();
+  const navigate = useNavigate();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -90,13 +73,17 @@ export default function NewWizardForm() {
         type: name.split("-")[0],
         payload: { index: name.split("-")[1], value: Number(value) },
       });
+    } else {
+      dispatch({ type: name, payload: value });
     }
-    dispatch({ type: name, payload: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Have to finish this
+
+    const result = await postNewWizard(formData);
+    // navigate(`/warbands/${result.warband_id}`);
+    navigate(`/warbands`);
   };
 
   return (
@@ -138,7 +125,7 @@ export default function NewWizardForm() {
             label="Class"
             displayEmpty
           >
-            <MenuItem value="0" disabled>
+            <MenuItem value={0} disabled>
               Select a Class
             </MenuItem>
             {referenceData.magic_school_data.map((schoolData: MagicSchool) => (
@@ -225,7 +212,7 @@ export default function NewWizardForm() {
                   label={`${schoolData.name} Spell`}
                   displayEmpty
                 >
-                  <MenuItem value="0" disabled selected>
+                  <MenuItem value={0} disabled>
                     --
                   </MenuItem>
                   {formData.wizard_class_id &&
@@ -267,7 +254,7 @@ export default function NewWizardForm() {
                   label={`Neutral Spell ${index + 1}`}
                   displayEmpty
                 >
-                  <MenuItem value="0" disabled selected>
+                  <MenuItem value={0} disabled>
                     --
                   </MenuItem>
                   {formData.wizard_class_id &&
@@ -319,6 +306,8 @@ export default function NewWizardForm() {
 
 function WizardFormReducer(state: Wizard, action: any) {
   switch (action.type) {
+    case "id":
+      return { ...state, user_id: action.payload };
     case "name":
       return { ...state, name: action.payload };
     case "wizard_class_id":
