@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import { registerAPI, getUserData, loginAPI } from "../../services/apiConnect";
+import { registerAPI, loginAPI, getUserData } from "../../services/authConnect";
 import type { User } from "../../context/AuthContext";
 
 type NewUser = {

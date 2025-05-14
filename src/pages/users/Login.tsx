@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import { loginAPI, getUserData } from "../../services/apiConnect";
+import { loginAPI, getUserData } from "../../services/authConnect";
 import type { User } from "../../context/AuthContext";
 import { Box, TextField, Button, Typography } from "@mui/material";
 
