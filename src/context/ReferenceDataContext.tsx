@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getReferenceData } from "../services/apiConnect";
+import fetchReferenceData from "../services/fetchReferenceData";
 
 const ReferenceDataContext = createContext();
 
@@ -10,7 +10,7 @@ export const ReferenceDataProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("Fetching Reference Data...");
-    getReferenceData()
+    fetchReferenceData()
       .then((res) => {
         setReferenceData(res.data);
         setLoading(false);
@@ -28,4 +28,10 @@ export const ReferenceDataProvider = ({ children }) => {
   );
 };
 
-export const useReferenceData = () => useContext(ReferenceDataContext);
+export const useReferenceData = () => {
+  const context = useContext(ReferenceDataContext);
+  if (!context) {
+    throw new Error("useAuthData must be used within an AuthProvider");
+  }
+  return context;
+};

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserData } from "../services/authConnect";
+import fetchUserData from "../services/fetchUserData";
 
 export type User = {
   _id: string;
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem("accessTokenFG");
     if (token) {
-      getUserData(token)
+      fetchUserData(token)
         .then((userData) => {
           setUser(userData);
         })

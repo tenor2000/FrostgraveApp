@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import { registerAPI, loginAPI, getUserData } from "../../services/authConnect";
+import postRegister from "../../services/postRegister";
+import postLogin from "../../services/postLogin";
+import fetchUserData from "../../services/fetchUserData";
 import type { User } from "../../context/AuthContext";
 
 type NewUser = {
@@ -49,11 +51,11 @@ export default function Register() {
     }
 
     try {
-      await registerAPI(newUser);
+      await postRegister(newUser);
 
-      const res = await loginAPI(newUser.username, newUser.password);
+      const res = await postLogin(newUser.username, newUser.password);
 
-      const userData: User = await getUserData(res.accessToken);
+      const userData: User = await fetchUserData(res.accessToken);
       setUser(userData);
       navigate("/");
     } catch (err: any) {

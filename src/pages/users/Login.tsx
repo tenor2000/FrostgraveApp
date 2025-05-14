@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import { loginAPI, getUserData } from "../../services/authConnect";
+import postLogin from "../../services/postLogin";
+import fetchUserData from "../../services/fetchUserData";
 import type { User } from "../../context/AuthContext";
 import { Box, TextField, Button, Typography } from "@mui/material";
 
@@ -17,12 +18,12 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await loginAPI(username, password);
+      const res = await postLogin(username, password);
       console.log(res);
 
       localStorage.setItem("accessTokenFG", res.data.accessToken);
 
-      const userData: User = await getUserData(res.data.accessToken);
+      const userData: User = await fetchUserData(res.data.accessToken);
       console.log(userData);
       setUser(userData);
       navigate("/");
