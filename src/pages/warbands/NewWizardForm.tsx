@@ -7,10 +7,12 @@ import {
   Select,
   MenuItem,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useReducer } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
+import getStoryPrompt from "../../utilFunctions/getStoryPrompt";
 
 type Wizard = {
   user_id: string;
@@ -44,7 +46,7 @@ export default function NewWizardForm() {
     primarySpellIds: [0, 0, 0],
     alignedSpellIds: [0, 0, 0],
     neutralSpellIds: [0, 0, 0, 0, 0],
-    backstory: "",
+    backstory: getStoryPrompt(),
   });
 
   const { referenceData, loading, error } = useReferenceData();
@@ -101,12 +103,22 @@ export default function NewWizardForm() {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 2 }}
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", md: "column" },
+        gap: 2,
+        marginTop: 2,
+      }}
     >
       {error && <div>{error}</div>}
       <Typography>Create a new Wizard</Typography>
       <Box
-        sx={{ display: "flex", flexDirection: "row", gap: 2, margin: "auto" }}
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+          margin: "auto",
+        }}
       >
         <TextField
           label="Name"
@@ -192,7 +204,7 @@ export default function NewWizardForm() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: { xs: "column", md: "row" },
               gap: 2,
               margin: "auto",
             }}
@@ -282,16 +294,20 @@ export default function NewWizardForm() {
               </FormControl>
             ))}
           </Box>
+          <Box>
+            <TextField
+              label="Backstory"
+              name="backstory"
+              value={formData.backstory}
+              onChange={handleChange}
+              multiline
+              minRows={5}
+              placeholder={"Your story begins..."}
+              sx={{ width: { xs: "100%", md: "80vw" } }}
+            />
+          </Box>
         </>
       ) : null}
-      <Box>
-        <TextField
-          label="Backstory"
-          name="backstory"
-          value={formData.backstory}
-          onChange={handleChange}
-        />
-      </Box>
       <Box>
         <Button type="submit" variant="contained">
           Submit
