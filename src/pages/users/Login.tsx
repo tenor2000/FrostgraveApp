@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
 import { loginAPI, getUserData } from "../../services/apiConnect";
 import type { User } from "../../context/AuthContext";
+import { Box, TextField, Button, Typography } from "@mui/material";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -31,30 +32,37 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin} style={{ maxWidth: "400px", margin: "auto" }}>
-      <h2>Login</h2>
+    <Box
+      component="form"
+      onSubmit={handleLogin}
+      sx={{ maxWidth: "400px", margin: "auto" }}
+    >
+      <Typography variant="h2">Login</Typography>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <div>
-        <label>Username</label>
-        <input
+      <Box sx={{ margin: "10px" }}>
+        <TextField
+          label="Username"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
-      </div>
-
-      <div>
-        <label>Password:</label>
-        <input
+      </Box>
+      <Box sx={{ margin: "10px" }}>
+        <TextField
+          label="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </div>
-
-      <button type="submit">Login</button>
-    </form>
+      </Box>
+      <Button type="submit" variant="outlined">
+        Login
+      </Button>
+      <Typography sx={{ marginTop: "10px" }}>
+        Don't have an account? <Link to="/users/register">Register</Link>
+      </Typography>
+    </Box>
   );
 }
