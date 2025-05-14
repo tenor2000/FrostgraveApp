@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserData } from "../services/authConnect";
 
 export type User = {
   _id: string;
@@ -35,10 +36,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    const token = localStorage.getItem("accessTokenFG");
+    if (token) {
+      getUserData(token)
+        .then((userData) => {
+          setUser(userData);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user with token:", err);
+          localStorage.removeItem("accessTokenFG");
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("user");
     navigate("/");
   };
 
