@@ -134,7 +134,7 @@ export default function Soldier() {
                   ) : (
                     "--"
                   )}
-                </TableCell>{" "}
+                </TableCell>
                 <TableCell>{object.source}</TableCell>
               </TableRow>
             ))}
