@@ -2,8 +2,9 @@ import React, { useState, useReducer } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import { registerAPI, getUserData } from "../../services/apiConnect";
+import { registerAPI, getUserData, loginAPI } from "../../services/apiConnect";
 import type { User } from "../../context/AuthContext";
 
 type NewUser = {
@@ -27,6 +28,9 @@ const initialState: NewUser = {
 export default function Register() {
   const [newUser, dispatch] = useReducer(newUserReducer, initialState);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { setUser } = useAuthData();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: e.target.name,
@@ -36,14 +40,22 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setError("");
+
+    if (newUser.password !== newUser.confirmpw) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
-      const res = await registerAPI(newUser);
+      await registerAPI(newUser);
 
-      // localStorage.setItem("accessTokenFG", res.data.accessToken);
+      const res = await loginAPI(newUser.username, newUser.password);
 
-      // const userData: User = await getUserData(res.data.accessToken);
-      // console.log(userData);
-      // navigate("/");
+      const userData: User = await getUserData(res.accessToken);
+      setUser(userData);
+      navigate("/");
     } catch (err: any) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 409) {
@@ -97,6 +109,7 @@ export default function Register() {
       </Box>
       <Box>
         <TextField
+          type="email"
           name="email"
           label="Email"
           value={newUser.email}
