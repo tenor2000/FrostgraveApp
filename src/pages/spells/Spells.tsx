@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,16 +15,7 @@ import SearchBar from "../../components/SearchBar";
 import BasicAccordian from "../../components/BasicAccordian";
 import BasicSpellCard from "./BasicSpellCard";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
-
-type Spell = {
-  _id: string;
-  spell_id: number;
-  name: string;
-  school_id: number;
-  base_cast: number;
-  category: string;
-  description: string;
-};
+import type { SpellType } from "../../types/ReferenceTypes";
 
 export default function Spells() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,7 +36,7 @@ export default function Spells() {
   }
 
   // Sorting the list of spells
-  let spellData: Spell[] = referenceData.spell_data.sort((a, b) =>
+  let spellData: SpellType[] = referenceData.spell_data.sort((a, b) =>
     a.name.localeCompare(b.name)
   );
 
@@ -53,7 +44,7 @@ export default function Spells() {
   const schooltypes = [
     ...new Set(
       spellData
-        .map((spell: Spell) =>
+        .map((spell: SpellType) =>
           getSchoolFromId(spell.school_id, referenceData)?.name.toLowerCase()
         )
         .sort((a, b) => a.localeCompare(b))
@@ -67,14 +58,14 @@ export default function Spells() {
 
   if (school && schooltypes.includes(school.toLowerCase())) {
     spellData = spellData.filter(
-      (spell: Spell) =>
+      (spell: SpellType) =>
         getSchoolFromId(spell.school_id, referenceData)?.name.toLowerCase() ===
         school.toLowerCase()
     );
   }
 
   if (searchTerm) {
-    spellData = spellData.filter((spell: Spell) =>
+    spellData = spellData.filter((spell: SpellType) =>
       spell.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
@@ -157,7 +148,7 @@ export default function Spells() {
         )}
       </Box>
       <Box>
-        {paginatedSpells.map((spell: Spell) => (
+        {paginatedSpells.map((spell: SpellType) => (
           <BasicAccordian title={spell.name} key={spell._id}>
             <BasicSpellCard spellObj={spell} titlebar={false} />
           </BasicAccordian>
