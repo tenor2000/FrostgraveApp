@@ -7,6 +7,8 @@ import { useWarbandData } from "../../context/WarbandDataContext";
 import WizardPage from "./WizardPage";
 import SelectWiz from "./SelectWiz";
 import Spellbook from "./Spellbook";
+import ApprenticePage from "./ApprenticePage";
+import FollowersPage from "./FollowersPage";
 
 export default function Warbands() {
   const { user, loading, error } = useAuthData();
@@ -50,12 +52,17 @@ export default function Warbands() {
             scrollButtons="auto"
             aria-label="warband tabs"
             allowScrollButtonsMobile
+            sx={{ bgcolor: "rgba(0, 0, 0, 0.5)" }}
           >
             <Tab
               component={Link}
               to="/warbands"
               label="Select"
-              sx={{ fontWeight: "bold", minWidth: "100px" }}
+              sx={{
+                fontWeight: "bold",
+                minWidth: "100px",
+                color: "white",
+              }}
             />
             {tabHeadings.map((heading: string) => (
               <Tab
@@ -63,22 +70,22 @@ export default function Warbands() {
                 component={Link}
                 to={`/warbands/${heading.toLowerCase()}`}
                 label={heading}
-                sx={{ fontWeight: "bold", minWidth: "100px" }}
+                sx={{ fontWeight: "bold", minWidth: "100px", color: "white" }}
               />
             ))}
           </Tabs>
         </Box>
       </Box>
       <Box sx={{ paddingTop: "1rem" }}>
-        {!section && (
-          <SelectWiz
-            warbandData={warbandData}
-            setCurrWizard={setCurrWizard}
-            currWizard={currWizard}
-          />
-        )}
+        {!section && <SelectWiz warbandData={warbandData} />}
         {section === "wizard" && <WizardPage currentWizard={currWizard} />}
         {section === "spellbook" && <Spellbook currentWizard={currWizard} />}
+        {section === "apprentice" && (
+          <ApprenticePage currentWizard={currWizard} />
+        )}
+        {section === "followers" && (
+          <FollowersPage currentWizard={currWizard} />
+        )}
       </Box>
     </Box>
   );
