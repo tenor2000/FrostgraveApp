@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const refreshData = () => {
+    console.log("Refreshing data...");
     setRefresh(!refresh);
   };
 
