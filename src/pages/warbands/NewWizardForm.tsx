@@ -19,8 +19,7 @@ import type { Wizard } from "../../types/WarbandTypes";
 import type { MagicSchool, SpellType } from "../../types/ReferenceTypes";
 
 export default function NewWizardForm() {
-  const { user } = useAuthData();
-  console.log("User: ", user);
+  const { user, refreshData } = useAuthData();
   const { referenceData, loading, error } = useReferenceData();
   const [formData, dispatch] = useReducer(WizardFormReducer, {
     user_id: user?._id || "LocalStorage",
@@ -47,9 +46,9 @@ export default function NewWizardForm() {
   ) || {
     school_id: 0,
     name: "",
-    aligned: [],
-    neutral: [],
-    opposed: [],
+    aligned: [0, 0, 0],
+    neutral: [0, 0, 0],
+    opposed: [0, 0],
   };
 
   const selectedSchoolName: string = primarySchool?.name || "Primary";
@@ -81,7 +80,8 @@ export default function NewWizardForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const result = await postNewWizard(formData);
+    await postNewWizard(formData);
+    refreshData();
     // navigate(`/warbands/${result.warband_id}`);
     navigate(`/warbands`);
   };
