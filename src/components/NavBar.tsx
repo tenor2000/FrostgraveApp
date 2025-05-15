@@ -148,11 +148,14 @@ function NavBar() {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user.username} src={user.avatar} />
-                </IconButton>
-              </Tooltip>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <Typography>{user.username}</Typography>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={user.username} src={user.avatar} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
             ) : (
               <Box sx={{ display: "flex" }}>
                 <Button
