@@ -84,10 +84,23 @@ export default function NewWizardForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!validateForm()) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+
     await postNewWizard(formData);
     refreshData();
-    // navigate(`/warbands/${result.warband_id}`);
     navigate(`/warbands`);
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) return false;
+    if (formData.wizard_class_id === 0) return false;
+    if (formData.primarySpellIds.some((id) => id === 0)) return false;
+    if (formData.alignedSpellIds.some((id) => id === 0)) return false;
+    if (formData.neutralSpellIds.some((id) => id === 0)) return false;
+    return true;
   };
 
   return (
@@ -323,7 +336,7 @@ function WizardFormReducer(state: WizardCreation, action: any) {
         wizard_class_id: action.payload,
         primarySpellIds: [0, 0, 0],
         alignedSpellIds: [0, 0, 0],
-        neutralSpellIds: [0, 0, 0, 0, 0],
+        neutralSpellIds: [0, 0],
       };
     case "updatePrimarySpellIds": {
       const updated = [...state.primarySpellIds];
