@@ -1,5 +1,5 @@
 import axios from "axios";
-import getToken from "./authToken";
+import { getToken } from "./authToken";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const deleteUser = async (user_id: string) => {

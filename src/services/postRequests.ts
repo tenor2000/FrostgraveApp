@@ -1,5 +1,5 @@
 import axios from "axios";
-import getToken from "./authToken";
+import { getToken } from "./authToken";
 import type { WizardCreation } from "../types/WarbandTypes";
 import type { UserCreation } from "../types/UserTypes";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
