@@ -1,36 +1,78 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Tabs, Tab, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
+import WizardPage from "./WizardPage";
+import SelectWiz from "./SelectWiz";
 
 export default function Warbands() {
   const { user, loading, error } = useAuthData();
+  const [tabValue, setTabValue] = useState(0);
+  const [currWizard, setCurrWizard] = useState(0);
   const { warbandData } = useAuthData();
+  const { section } = useParams<{ section: string }>();
 
   if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error.message}</p>;
   console.log(warbandData);
 
+  const tabHeadings = ["Wizard", "Spellbook", "Apprentice", "Followers"];
+
   if (!user) {
     return (
       <Box>
         <Typography>Warbands</Typography>
+        <p>Please log in to view your warbands.</p>
         <Link to="/users/login">Login</Link>
       </Box>
     );
   }
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
   return (
     <Box>
-      <Typography>Warbands</Typography>
-      {user && <p>{user.username}</p>}
-      {warbandData &&
-        warbandData
-          .sort((a, b) =>
-            a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-          )
-          .map((wizard) => <p key={wizard._id}>{wizard.name}</p>)}
-
-      <Link to="/warbands/createWizard">New Wizard</Link>
+      <Box
+        sx={{ display: { xs: "none", md: "flex" }, justifyContent: "center" }}
+      >
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={tabValue}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="warband tabs"
+            allowScrollButtonsMobile
+          >
+            <Tab
+              component={Link}
+              to="/warbands"
+              label="Select"
+              sx={{ fontWeight: "bold", minWidth: "100px" }}
+            />
+            {tabHeadings.map((heading: string) => (
+              <Tab
+                key={heading}
+                component={Link}
+                to={`/warbands/${heading.toLowerCase()}`}
+                label={heading}
+                sx={{ fontWeight: "bold", minWidth: "100px" }}
+              />
+            ))}
+          </Tabs>
+        </Box>
+      </Box>
+      {!section && (
+        <SelectWiz
+          warbandData={warbandData}
+          setCurrWizard={setCurrWizard}
+          currWizard={currWizard}
+        />
+      )}
+      {section === "wizard" && <WizardPage currentWizard={currWizard} />}
     </Box>
   );
 }
