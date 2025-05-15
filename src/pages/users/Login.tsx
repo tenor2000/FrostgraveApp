@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import postLogin from "../../services/postLogin";
-import fetchUserData from "../../services/fetchUserData";
-import type { User } from "../../context/AuthContext";
+import { postLogin } from "../../services/postRequests";
+import { fetchUserData } from "../../services/fetchRequests";
+import type { User } from "../../types/UserTypes";
 import { Box, TextField, Button, Typography } from "@mui/material";
 
 export default function Login() {
@@ -24,7 +24,7 @@ export default function Login() {
       localStorage.setItem("accessTokenFG", res.data.accessToken);
 
       const userData: User = await fetchUserData(res.data.accessToken);
-      console.log(userData);
+      // console.log(userData);
       setUser(userData);
       navigate("/");
     } catch (err: any) {

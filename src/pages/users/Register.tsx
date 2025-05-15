@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
-import postRegister from "../../services/postRegister";
-import postLogin from "../../services/postLogin";
-import fetchUserData from "../../services/fetchUserData";
-import type { User } from "../../context/AuthContext";
+import { postRegister, postLogin } from "../../services/postRequests";
+import { fetchUserData } from "../../services/fetchRequests";
+import type { User } from "../../types/UserTypes";
 
 type NewUser = {
   firstname: string;

@@ -12,7 +12,7 @@ import { useReducer } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 import getStoryPrompt from "../../utilFunctions/getStoryPrompt";
-import { postNewWizard } from "../../services/postNewWizard";
+import { postNewWizard } from "../../services/postRequests";
 import { useAuthData } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import type { Wizard } from "../../types/WarbandTypes";

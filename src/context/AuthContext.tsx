@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../types/UserTypes";
-import fetchUserData from "../services/fetchUserData";
-import fetchWarbandData from "../services/fetchWarbandData";
+import { fetchUserData, fetchWarbandsData } from "../services/fetchRequests";
 
 type AuthContextType = {
   user: User | null;
@@ -33,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const userData = await fetchUserData(token);
         setUser(userData);
 
-        const warbandData = await fetchWarbandData(token, userData._id);
+        const warbandData = await fetchWarbandsData(token, userData._id);
         console.log(warbandData);
         setWarbandData(warbandData);
       } catch (err) {
