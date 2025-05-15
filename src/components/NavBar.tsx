@@ -111,7 +111,7 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -196,11 +196,14 @@ function NavBar() {
               )}
               {user &&
                 settings.map((setting) => (
-                  <MenuItem key={setting.page} onClick={handleCloseUserMenu}>
-                    <Typography
-                      sx={{ textAlign: "center" }}
-                      onClick={() => nav(setting.route)}
-                    >
+                  <MenuItem
+                    key={setting.page}
+                    onClick={() => {
+                      nav(setting.route);
+                      handleCloseUserMenu();
+                    }}
+                  >
+                    <Typography sx={{ textAlign: "center" }}>
                       {setting.page}
                     </Typography>
                   </MenuItem>
