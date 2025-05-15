@@ -19,7 +19,7 @@ export default function Spellbook({ currentWizard }) {
   }
 
   if (!currentWizard) {
-    return <div>Please Choose a Wizard.</div>;
+    return <div>Please Select a Wizard.</div>;
   }
 
   const schoolName = getSchoolFromId(
@@ -76,7 +76,11 @@ export default function Spellbook({ currentWizard }) {
       <Typography variant="h5">{schoolName} Spells</Typography>
       <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
         {primarySpells.map((spell: SpellType) => (
-          <Button onClick={() => setDisplaySpell(spell)} variant="outlined">
+          <Button
+            onClick={() => setDisplaySpell(spell)}
+            variant="outlined"
+            key={spell._id}
+          >
             {spell.name}
           </Button>
         ))}
@@ -84,7 +88,11 @@ export default function Spellbook({ currentWizard }) {
       <Typography variant="h5">Aligned Spells</Typography>
       <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
         {alignedSpells.map((spell: SpellType) => (
-          <Button onClick={() => setDisplaySpell(spell)} variant="outlined">
+          <Button
+            onClick={() => setDisplaySpell(spell)}
+            variant="outlined"
+            key={spell._id}
+          >
             {spell.name}
           </Button>
         ))}
@@ -92,7 +100,11 @@ export default function Spellbook({ currentWizard }) {
       <Typography variant="h5">Neutral Spells</Typography>
       <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
         {neutralSpells.map((spell: SpellType) => (
-          <Button onClick={() => setDisplaySpell(spell)} variant="outlined">
+          <Button
+            onClick={() => setDisplaySpell(spell)}
+            variant="outlined"
+            key={spell._id}
+          >
             {spell.name}
           </Button>
         ))}
@@ -104,7 +116,11 @@ export default function Spellbook({ currentWizard }) {
             sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}
           >
             {opposedSpells.map((spell: SpellType) => (
-              <Button onClick={() => setDisplaySpell(spell)} variant="outlined">
+              <Button
+                onClick={() => setDisplaySpell(spell)}
+                variant="outlined"
+                key={spell._id}
+              >
                 {spell.name}
               </Button>
             ))}
