@@ -55,10 +55,13 @@ export default function Reference() {
 
   return (
     <>
-      <Box
-        sx={{ display: { sm: "none", md: "flex" }, justifyContent: "center" }}
-      >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ padding: "1rem", marginBottom: "1rem" }}>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            justifyContent: "center",
+          }}
+        >
           <Tabs
             value={tabValue}
             onChange={handleChange}

@@ -90,8 +90,13 @@ export default function Spells() {
 
   return (
     <>
-      <Box sx={{ display: { xs: "none", md: "block" } }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ padding: "1rem", marginBottom: "1rem" }}>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            justifyContent: "center",
+          }}
+        >
           <Tabs
             value={tabValue}
             onChange={handleChange}

@@ -3,19 +3,20 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthData } from "../../context/AuthContext";
+import { useWarbandData } from "../../context/WarbandDataContext";
 import WizardPage from "./WizardPage";
 import SelectWiz from "./SelectWiz";
+import Spellbook from "./Spellbook";
 
 export default function Warbands() {
   const { user, loading, error } = useAuthData();
   const [tabValue, setTabValue] = useState(0);
-  const [currWizard, setCurrWizard] = useState(0);
   const { warbandData } = useAuthData();
   const { section } = useParams<{ section: string }>();
+  const { currWizard, setCurrWizard } = useWarbandData();
 
   if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error.message}</p>;
-  console.log(warbandData);
 
   const tabHeadings = ["Wizard", "Spellbook", "Apprentice", "Followers"];
 
@@ -34,9 +35,12 @@ export default function Warbands() {
   };
 
   return (
-    <Box>
+    <Box sx={{ padding: "1rem", marginBottom: "1rem" }}>
       <Box
-        sx={{ display: { xs: "none", md: "flex" }, justifyContent: "center" }}
+        sx={{
+          display: { xs: "none", md: "flex" },
+          justifyContent: "center",
+        }}
       >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
@@ -65,14 +69,17 @@ export default function Warbands() {
           </Tabs>
         </Box>
       </Box>
-      {!section && (
-        <SelectWiz
-          warbandData={warbandData}
-          setCurrWizard={setCurrWizard}
-          currWizard={currWizard}
-        />
-      )}
-      {section === "wizard" && <WizardPage currentWizard={currWizard} />}
+      <Box sx={{ paddingTop: "1rem" }}>
+        {!section && (
+          <SelectWiz
+            warbandData={warbandData}
+            setCurrWizard={setCurrWizard}
+            currWizard={currWizard}
+          />
+        )}
+        {section === "wizard" && <WizardPage currentWizard={currWizard} />}
+        {section === "spellbook" && <Spellbook currentWizard={currWizard} />}
+      </Box>
     </Box>
   );
 }
