@@ -1,26 +1,9 @@
 import axios from "axios";
+import type { UserCreation } from "../types/UserTypes";
 
-const postRegister = async ({
-  firstname,
-  lastname,
-  email,
-  username,
-  password,
-}: {
-  firstname: string;
-  lastname: string;
-  email: string;
-  username: string;
-  password: string;
-}) => {
+const postRegister = async (userData: UserCreation) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const response = await axios.post(`${backendUrl}/auth/register`, {
-    firstname,
-    lastname,
-    email,
-    username,
-    password,
-  });
+  const response = await axios.post(`${backendUrl}/auth/register`, userData);
   console.log(response);
   return response;
 };

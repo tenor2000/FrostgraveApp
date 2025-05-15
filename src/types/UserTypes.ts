@@ -14,3 +14,11 @@ export type User = {
     avatar: string;
   };
 };
+
+export type UserCreation = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  email: string;
+  password: string;
+};
