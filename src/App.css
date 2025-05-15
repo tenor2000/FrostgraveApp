@@ -1,12 +1,17 @@
 #root {
-  width: 1280px;
+  width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
+  min-height: 100dvw;
+  display: flex;
+  flex-direction: column;
+  /* background-image: url("./assets/wooden-floor-background.jpg"); */
+  background-size: cover;
 }
 
 header {
-  width: 100vw;
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -18,12 +23,4 @@ header {
   vertical-align: middle;
   color: inherit;
   background-color: inherit;
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

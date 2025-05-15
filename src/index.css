@@ -16,9 +16,15 @@
 body {
   margin: 0;
   display: flex;
-  /* place-items: center; */
+  padding: 0;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100%;
+  background-attachment: fixed;
+  background-image: url("https://cdna.artstation.com/p/assets/images/images/060/360/826/large/caterina-bufalari-icy-fortress-artstation-first-thumb.jpg?1678383442");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: light) {
