@@ -1,8 +1,19 @@
 import axios from "axios";
 import type { WizardCreation } from "../types/WarbandTypes";
+import type { UserCreation } from "../types/UserTypes";
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+export const postLogin = async (username: string, password: string) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const response = await axios.post(`${backendUrl}/auth/login`, {
+    username,
+    password,
+  });
+
+  return response;
+};
 
 export const postNewWizard = async (wizard: WizardCreation) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (wizard.user_id !== "LocalStorage") {
     try {
       const response = await axios.post(
@@ -23,4 +34,10 @@ export const postNewWizard = async (wizard: WizardCreation) => {
       console.error(err);
     }
   }
+};
+
+export const postRegister = async (userData: UserCreation) => {
+  const response = await axios.post(`${backendUrl}/auth/register`, userData);
+  // console.log(response);
+  return response;
 };
