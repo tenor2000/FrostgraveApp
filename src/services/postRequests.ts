@@ -1,4 +1,5 @@
 import axios from "axios";
+import getToken from "./authToken";
 import type { WizardCreation } from "../types/WarbandTypes";
 import type { UserCreation } from "../types/UserTypes";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -18,7 +19,12 @@ export const postNewWizard = async (wizard: WizardCreation) => {
     try {
       const response = await axios.post(
         `${backendUrl}/warbands/wizards`,
-        wizard
+        wizard,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
       );
       console.log(response.data);
       return response.data;
