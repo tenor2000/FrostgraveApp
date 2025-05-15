@@ -12,6 +12,7 @@ import NewWizardForm from "./pages/warbands/NewWizardForm.tsx";
 import Spells from "./pages/spells/Spells.tsx";
 import Login from "./pages/users/Login.tsx";
 import Register from "./pages/users/Register.tsx";
+import Profile from "./pages/users/Profile.tsx";
 import MobileBottomNav from "./components/BottomNav.tsx";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path="campaigns" element={<h1>Campaigns</h1>} />
               <Route path="users/login" element={<Login />} />
               <Route path="users/register" element={<Register />} />
+              <Route path="users/profile" element={<Profile />} />
               <Route path="*" element={<h1>404 Page Not Found</h1>} />
             </Routes>
           </main>
