@@ -22,7 +22,12 @@ export default function StatCard({ wizard }) {
   const { referenceData } = useReferenceData();
 
   const getStat = (base, mod) => base + (mod ?? 0);
-  const className = getSchoolFromId(wizard.wizard_class_id, referenceData).name;
+  let className;
+  if (wizard.wizard_class_id === 0) {
+    className = "Apprentice";
+  } else {
+    className = getSchoolFromId(wizard.wizard_class_id, referenceData).name;
+  }
 
   const stats = [
     { label: "Move", value: getStat(wizard.move, statMods.move) },
