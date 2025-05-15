@@ -68,13 +68,13 @@ export default function Reference() {
             variant="scrollable"
             scrollButtons="auto"
             aria-label="reference tabs"
-            sx={{ overflowX: "auto" }}
+            sx={{ overflowX: "auto", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
           >
             <Tab
               component={Link}
               to="/reference"
               label="All"
-              sx={{ fontWeight: "bold", minWidth: "100px" }}
+              sx={{ fontWeight: "bold", minWidth: "100px", color: "white" }}
             />
             {refTypes.map((refType: string) => (
               <Tab
@@ -86,7 +86,7 @@ export default function Reference() {
                   .slice(0, -1)
                   .map((word) => word[0].toUpperCase() + word.slice(1))
                   .join(" ")}
-                sx={{ minWidth: "120px" }}
+                sx={{ minWidth: "120px", color: "white" }}
               />
             ))}
           </Tabs>

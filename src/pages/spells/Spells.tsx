@@ -104,12 +104,13 @@ export default function Spells() {
             scrollButtons="auto"
             aria-label="spell school tabs"
             allowScrollButtonsMobile
+            sx={{ bgcolor: "rgba(0, 0, 0, 0.5)" }}
           >
             <Tab
               component={Link}
               to="/spells"
               label="All"
-              sx={{ fontWeight: "bold", minWidth: "100px" }}
+              sx={{ fontWeight: "bold", minWidth: "100px", color: "white" }}
             />
             {schooltypes.map((school: string) => (
               <Tab
@@ -118,7 +119,7 @@ export default function Spells() {
                 onClick={() => setPage(1)}
                 to={`/spells/${school}`}
                 label={school}
-                sx={{ fontWeight: "bold", minWidth: "100px" }}
+                sx={{ fontWeight: "bold", minWidth: "100px", color: "white" }}
               />
             ))}
           </Tabs>
