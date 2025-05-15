@@ -5,6 +5,7 @@ import { postLogin } from "../../services/postRequests";
 import { fetchUserData } from "../../services/fetchRequests";
 import type { User } from "../../types/UserTypes";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import { setToken } from "../../services/authToken";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -12,20 +13,19 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { setUser } = useAuthData();
+  const { setUser, refreshData } = useAuthData();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await postLogin(username, password);
-      console.log(res);
+      console.log(res.data);
 
-      localStorage.setItem("accessTokenFG", res.data.accessToken);
-
-      const userData: User = await fetchUserData(res.data.accessToken);
-      // console.log(userData);
+      setToken(res.data.accessToken);
+      const userData: User = await fetchUserData();
       setUser(userData);
+
       navigate("/");
     } catch (err: any) {
       setError(err.message);

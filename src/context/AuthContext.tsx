@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../types/UserTypes";
+import { getToken, removeToken } from "../services/authToken";
 import { fetchUserData, fetchWarbandsData } from "../services/fetchRequests";
 
 type AuthContextType = {
@@ -25,19 +26,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("accessTokenFG");
-
     const fetchData = async () => {
       try {
-        const userData = await fetchUserData(token);
+        const userData = await fetchUserData();
         setUser(userData);
 
-        const warbandData = await fetchWarbandsData(token, userData._id);
-        console.log(warbandData);
+        const warbandData = await fetchWarbandsData(userData._id);
+        // console.log(warbandData);
         setWarbandData(warbandData);
       } catch (err) {
         console.error("Failed to fetch user with token:", err);
-        localStorage.removeItem("accessTokenFG");
+        removeToken();
         setError(err.message);
         setUser(null);
       } finally {
@@ -45,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    if (token) {
+    if (getToken()) {
       fetchData();
     } else {
       setLoading(false);
@@ -62,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    removeToken();
     navigate("/");
   };
 

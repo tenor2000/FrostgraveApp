@@ -52,9 +52,9 @@ export default function Register() {
     try {
       await postRegister(newUser);
 
-      const res = await postLogin(newUser.username, newUser.password);
+      await postLogin(newUser.username, newUser.password);
 
-      const userData: User = await fetchUserData(res.accessToken);
+      const userData: User = await fetchUserData();
       setUser(userData);
       navigate("/");
     } catch (err: any) {
