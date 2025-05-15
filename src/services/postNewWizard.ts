@@ -1,7 +1,7 @@
 import axios from "axios";
-import type { Wizard } from "../types/WarbandTypes";
+import type { WizardCreation } from "../types/WarbandTypes";
 
-export const postNewWizard = async (wizard: Wizard) => {
+export const postNewWizard = async (wizard: WizardCreation) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (wizard.user_id !== "LocalStorage") {
     try {
