@@ -13,12 +13,12 @@ export const fetchReferenceData = async () => {
 };
 
 export const fetchUserData = async () => {
-  const response = await axios.get(`${backendUrl}/users`, {
+  const response = await axios.get(`${backendUrl}/users/me`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
-  const userData = response.data[0];
+  const userData = response.data;
   // console.log(userData);
   return userData;
 };
