@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 import { useReferenceData } from "../../context/ReferenceDataContext";
+import StatCard from "./StatCard";
 
 export default function WizardPage({ currentWizard }) {
   const { referenceData, loading, error } = useReferenceData();
@@ -18,10 +19,7 @@ export default function WizardPage({ currentWizard }) {
 
   return (
     <Box sx={{ margin: "auto", textAlign: "center", padding: "1rem" }}>
-      <Typography>
-        {currentWizard.name} the{" "}
-        {getSchoolFromId(currentWizard.wizard_class_id, referenceData)?.name}
-      </Typography>
+      <StatCard wizard={currentWizard} />
     </Box>
   );
 }
