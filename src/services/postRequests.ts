@@ -42,6 +42,38 @@ export const postNewWizard = async (wizard: WizardCreation) => {
   }
 };
 
+export const postNewApprentice = async (apprentice: {
+  name: string;
+  wizard_id: string;
+  status: number;
+}) => {
+  if (apprentice.wizard_id !== "LocalStorage") {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/warbands/apprentices`,
+        apprentice,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (err: any) {
+      console.error(err);
+    }
+  } else {
+    try {
+      localStorage.setItem("apprenticeFG", JSON.stringify(wizard));
+      console.log("Saved to localStorage");
+      return apprentice;
+    } catch (err: any) {
+      console.error(err);
+    }
+  }
+};
+
 export const postRegister = async (userData: UserCreation) => {
   const response = await axios.post(`${backendUrl}/auth/register`, userData);
   // console.log(response);
