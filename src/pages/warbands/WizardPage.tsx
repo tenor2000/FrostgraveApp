@@ -14,7 +14,7 @@ export default function WizardPage({ currentWizard }) {
   }
 
   if (!currentWizard) {
-    return <div>Please Choose a Wizard.</div>;
+    return <div>Please Select a Wizard.</div>;
   }
 
   return (

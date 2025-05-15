@@ -11,8 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthData } from "../context/AuthContext";
 
 const pages = ["Reference", "Spells", "Warbands", "Campaigns"];
@@ -28,6 +27,8 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+
+  const location = useLocation();
 
   const { user, logout } = useAuthData();
   const nav = useNavigate();
@@ -53,10 +54,9 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "black" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#0C1F2B" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Typography
             variant="h6"
             noWrap
@@ -111,7 +111,7 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+
           <Typography
             variant="h5"
             noWrap
@@ -134,22 +134,30 @@ function NavBar() {
             FrostGrave
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => {
-                  handleNavigate(page);
-                }}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page) => {
+              const isActive = page === location.pathname.split("/")[1];
+
+              return (
+                <Button
+                  key={page}
+                  onClick={() => {
+                    handleNavigate(page);
+                  }}
+                  sx={{
+                    my: 2,
+                    color: isActive ? "primary.main" : "white",
+                    display: "block",
+                  }}
+                >
+                  {page}
+                </Button>
+              );
+            })}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
               <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                <Typography>{user.username}</Typography>
+                <Typography>Welcome, {user.username}!</Typography>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt={user.username} src={user.avatar} />
