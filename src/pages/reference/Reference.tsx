@@ -26,8 +26,6 @@ export default function Reference() {
   const nav = useNavigate();
   const { refType } = useParams<{ refType: string }>(); // refType comes in as '(name_of_refType)_data'
   const { referenceData, loading, error } = useReferenceData();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -57,7 +55,9 @@ export default function Reference() {
 
   return (
     <>
-      <Box sx={{ display: isMobile ? "none" : "block" }}>
+      <Box
+        sx={{ display: { sm: "none", md: "flex" }, justifyContent: "center" }}
+      >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={tabValue}
