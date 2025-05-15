@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { ReferenceDataProvider } from "./context/ReferenceDataContext.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import { WarbandDataProvider } from "./context/WarbandDataContext.tsx";
 import Home from "./pages/home/Home.tsx";
 import Reference from "./pages/reference/Reference.tsx";
 import Warbands from "./pages/warbands/Warbands.tsx";
@@ -21,26 +22,31 @@ function App() {
     <>
       <AuthProvider>
         <ReferenceDataProvider>
-          <NavBar />
-          {/* <Sidebar /> */}
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="reference" element={<Reference />} />
-              <Route path="reference/:refType" element={<Reference />} />
-              <Route path="spells" element={<Spells />} />
-              <Route path="spells/:school" element={<Spells />} />
-              <Route path="warbands/createWizard" element={<NewWizardForm />} />
-              <Route path="warbands/" element={<Warbands />} />
-              <Route path="warbands/:section" element={<Warbands />} />
-              <Route path="campaigns" element={<h1>Campaigns</h1>} />
-              <Route path="users/login" element={<Login />} />
-              <Route path="users/register" element={<Register />} />
-              <Route path="users/profile" element={<Profile />} />
-              <Route path="*" element={<h1>404 Page Not Found</h1>} />
-            </Routes>
-          </main>
-          {isMobile && <MobileBottomNav />}
+          <WarbandDataProvider>
+            <NavBar />
+            {/* <Sidebar /> */}
+            <main>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="reference" element={<Reference />} />
+                <Route path="reference/:refType" element={<Reference />} />
+                <Route path="spells" element={<Spells />} />
+                <Route path="spells/:school" element={<Spells />} />
+                <Route
+                  path="warbands/createWizard"
+                  element={<NewWizardForm />}
+                />
+                <Route path="warbands/" element={<Warbands />} />
+                <Route path="warbands/:section" element={<Warbands />} />
+                <Route path="campaigns" element={<h1>Campaigns</h1>} />
+                <Route path="users/login" element={<Login />} />
+                <Route path="users/register" element={<Register />} />
+                <Route path="users/profile" element={<Profile />} />
+                <Route path="*" element={<h1>404 Page Not Found</h1>} />
+              </Routes>
+            </main>
+            {isMobile && <MobileBottomNav />}
+          </WarbandDataProvider>
         </ReferenceDataProvider>
       </AuthProvider>
     </>
