@@ -53,18 +53,10 @@ export default function Profile() {
       await putUser(localStorage.getItem("accessTokenFG") || "", formData);
       // If you have a way to update user in context, use that here:
       // setUser(res.data);
-      setSnackbar({
-        open: true,
-        message: "Profile updated!",
-        severity: "success",
-      });
-      setIsEditing(false);
     } catch {
-      setSnackbar({
-        open: true,
-        message: "Failed to update profile.",
-        severity: "error",
-      });
+    } finally {
+      setIsEditing(false);
+      refreshData();
     }
   };
 
