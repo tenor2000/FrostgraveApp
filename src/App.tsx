@@ -23,15 +23,16 @@ function App() {
         <ReferenceDataProvider>
           <NavBar />
           {/* <Sidebar /> */}
-          <main style={{ border: "1px solid red" }}>
+          <main>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="reference" element={<Reference />} />
               <Route path="reference/:refType" element={<Reference />} />
               <Route path="spells" element={<Spells />} />
               <Route path="spells/:school" element={<Spells />} />
-              <Route path="warbands" element={<Warbands />} />
               <Route path="warbands/createWizard" element={<NewWizardForm />} />
+              <Route path="warbands/" element={<Warbands />} />
+              <Route path="warbands/:section" element={<Warbands />} />
               <Route path="campaigns" element={<h1>Campaigns</h1>} />
               <Route path="users/login" element={<Login />} />
               <Route path="users/register" element={<Register />} />
