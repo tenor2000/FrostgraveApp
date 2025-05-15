@@ -7,6 +7,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
+import { useReferenceData } from "../../context/ReferenceDataContext";
+import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 
 export default function BasicSpellCard({
   spellObj,
@@ -17,12 +19,14 @@ export default function BasicSpellCard({
   const isPortrait = useMediaQuery(
     "(max-width: 768px) and (orientation: portrait)"
   );
+  const { referenceData } = useReferenceData();
+  const schoolName = getSchoolFromId(spellObj.school_id, referenceData).name;
 
   if (isPortrait) {
     return (
       <Paper
         sx={{
-          width: "100%",
+          maxWidth: "100%",
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
@@ -46,7 +50,7 @@ export default function BasicSpellCard({
                   colSpan={castnum ? 4 : 3}
                   sx={{ textAlign: "center" }}
                 >
-                  <h3>School: {spellObj.school}</h3>
+                  <h3>School: {schoolName}</h3>
                 </TableCell>
               </TableRow>
             )}
@@ -54,7 +58,7 @@ export default function BasicSpellCard({
           <TableBody sx={{ "& td": { textAlign: "center", flex: 1 } }}>
             <TableRow>
               {titlebar && (
-                <TableCell sx={{ width: "50%" }}>{spellObj.school}</TableCell>
+                <TableCell sx={{ width: "50%" }}>{schoolName}</TableCell>
               )}
               {!castnum && (
                 <TableCell sx={{ width: "50%" }}>
@@ -118,9 +122,7 @@ export default function BasicSpellCard({
         </TableHead>
         <TableBody sx={{ "& td": { textAlign: "left" } }}>
           <TableRow>
-            <TableCell sx={{ width: "25%" }}>
-              School: {spellObj.school}
-            </TableCell>
+            <TableCell sx={{ width: "25%" }}>School: {schoolName}</TableCell>
             <TableCell rowSpan={4} sx={{ width: "75%" }}>
               {spellObj.description}
             </TableCell>
