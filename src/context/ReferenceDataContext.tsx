@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import fetchReferenceData from "../services/fetchReferenceData";
+import { fetchReferenceData } from "../services/fetchRequests";
 
 const ReferenceDataContext = createContext();
 
