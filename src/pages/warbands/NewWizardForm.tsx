@@ -27,7 +27,7 @@ export default function NewWizardForm() {
     wizard_class_id: 0,
     primarySpellIds: [0, 0, 0],
     alignedSpellIds: [0, 0, 0],
-    neutralSpellIds: [0, 0, 0, 0, 0],
+    neutralSpellIds: [0, 0],
     backstory: getStoryPrompt(),
   });
 
@@ -75,6 +75,10 @@ export default function NewWizardForm() {
     } else {
       dispatch({ type: name, payload: value });
     }
+  };
+
+  const handleCancel = () => {
+    navigate(`/warbands`);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -290,13 +294,16 @@ export default function NewWizardForm() {
               multiline
               minRows={5}
               placeholder={"Your story begins..."}
-              sx={{ width: { xs: "100%", md: "80vw" } }}
+              sx={{ width: { xs: "100%", md: "80%" } }}
             />
           </Box>
         </>
       ) : null}
       <Box>
-        <Button type="submit" variant="contained">
+        <Button onClick={handleCancel} variant="outlined">
+          Cancel
+        </Button>
+        <Button type="submit" variant="outlined">
           Submit
         </Button>
       </Box>
