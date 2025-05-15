@@ -15,7 +15,7 @@ import getStoryPrompt from "../../utilFunctions/getStoryPrompt";
 import { postNewWizard } from "../../services/postRequests";
 import { useAuthData } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import type { Wizard } from "../../types/WarbandTypes";
+import type { WizardCreation } from "../../types/WarbandTypes";
 import type { MagicSchool, SpellType } from "../../types/ReferenceTypes";
 
 export default function NewWizardForm() {
@@ -304,7 +304,7 @@ export default function NewWizardForm() {
   );
 }
 
-function WizardFormReducer(state: Wizard, action: any) {
+function WizardFormReducer(state: WizardCreation, action: any) {
   switch (action.type) {
     case "id":
       return { ...state, user_id: action.payload };
