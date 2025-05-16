@@ -4,6 +4,7 @@ import {
   Box,
   InputLabel,
   FormControl,
+  Paper,
   Select,
   MenuItem,
   Typography,
@@ -104,223 +105,238 @@ export default function NewWizardForm() {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "column" },
-        gap: 2,
-        marginTop: 2,
-      }}
-    >
-      {error && <div>{error}</div>}
-      <Typography>Create a new Wizard</Typography>
+    <Paper sx={{ padding: 2 }}>
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
+          flexDirection: { xs: "column", md: "column" },
           gap: 2,
-          margin: "auto",
+          marginTop: 2,
+          width: "100%",
         }}
       >
-        <TextField
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          sx={{ flex: 1 }}
-        />
-        <FormControl required sx={{ flex: 1 }}>
-          <InputLabel id="class-label">Class</InputLabel>
-          <Select
-            labelId="class-label"
-            name="wizard_class_id"
-            value={formData.wizard_class_id}
+        {error && <div>{error}</div>}
+        <Typography>Create a new Wizard</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: 2,
+            margin: "auto",
+          }}
+        >
+          <TextField
+            label="Name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
-            label="Class"
-            displayEmpty
-          >
-            <MenuItem value={0} disabled>
-              Select a Class
-            </MenuItem>
-            {referenceData.magic_school_data.map((schoolData: MagicSchool) => (
-              <MenuItem key={schoolData.school_id} value={schoolData.school_id}>
-                {schoolData.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-      {formData.wizard_class_id ? (
-        <>
-          <Typography>Primary Spells</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 2,
-              margin: "auto",
-            }}
-          >
-            {[0, 1, 2].map((index) => (
-              <FormControl key={index} required>
-                <InputLabel id="spell-label">{`${selectedSchoolName} Spell ${
-                  index + 1
-                }`}</InputLabel>
-                <Select
-                  labelId="spell-label"
-                  name={`updatePrimarySpellIds-${index}`}
-                  value={formData.primarySpellIds[index]}
-                  onChange={handleChange}
-                  sx={{ minWidth: 200 }}
-                  label={`${selectedSchoolName} Spell ${index + 1}`}
-                  displayEmpty
-                >
-                  <MenuItem value="0" disabled selected>
-                    --
-                  </MenuItem>
-                  {formData.wizard_class_id &&
-                    referenceData.spell_data
-                      .filter(
-                        (spell: SpellType) =>
-                          spell.school_id === formData.wizard_class_id
-                      )
-                      .map((spell: SpellType) => (
-                        <MenuItem
-                          key={spell.spell_id}
-                          value={spell.spell_id}
-                          disabled={
-                            formData.primarySpellIds.includes(spell.spell_id) &&
-                            formData.primarySpellIds[index] !== spell.spell_id
-                          }
-                        >
-                          {spell.name}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
-            ))}
-          </Box>
-
-          <Typography>Aligned Spells</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: 2,
-              margin: "auto",
-            }}
-          >
-            {alignedSchools.map((schoolData: MagicSchool) => (
-              <FormControl key={schoolData.school_id} required>
-                <InputLabel id="spell-label">{`${schoolData.name} Spell`}</InputLabel>
-                <Select
-                  labelId="spell-label"
-                  name={`updateAlignedSpellIds-${alignedSchools.indexOf(
-                    schoolData
-                  )}`}
-                  value={
-                    formData.alignedSpellIds[alignedSchools.indexOf(schoolData)]
-                  }
-                  onChange={handleChange}
-                  sx={{ minWidth: 200 }}
-                  label={`${schoolData.name} Spell`}
-                  displayEmpty
-                >
-                  <MenuItem value={0} disabled>
-                    --
-                  </MenuItem>
-                  {formData.wizard_class_id &&
-                    referenceData.spell_data
-                      .filter(
-                        (spell: SpellType) =>
-                          spell.school_id === schoolData.school_id
-                      )
-                      .map((spell: SpellType) => (
-                        <MenuItem key={spell.spell_id} value={spell.spell_id}>
-                          {spell.name}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
-            ))}
-          </Box>
-
-          <Typography>Neutral Spells</Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 2,
-              margin: "auto",
-            }}
-          >
-            {[0, 1].map((index) => (
-              <FormControl key={`neutral-${index}`} required>
-                <InputLabel id="spell-label">
-                  Neutral Spell {index + 1}
-                </InputLabel>
-                <Select
-                  labelId="spell-label"
-                  name={`updateNeutralSpellIds-${index}`}
-                  value={formData.neutralSpellIds[index]}
-                  onChange={handleChange}
-                  sx={{ minWidth: 200 }}
-                  label={`Neutral Spell ${index + 1}`}
-                  displayEmpty
-                >
-                  <MenuItem value={0} disabled>
-                    --
-                  </MenuItem>
-                  {formData.wizard_class_id &&
-                    referenceData.spell_data
-                      .filter((spell: SpellType) => {
-                        const schoolIdArray = neutralSchools.map(
-                          (school: MagicSchool) => school.school_id
-                        );
-                        return schoolIdArray.includes(spell.school_id);
-                      })
-                      .map((spell: SpellType) => (
-                        <MenuItem
-                          key={spell.spell_id}
-                          value={spell.spell_id}
-                          disabled={
-                            formData.neutralSpellIds.includes(spell.spell_id) &&
-                            formData.neutralSpellIds[index] !== spell.spell_id
-                          }
-                        >
-                          {spell.name}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
-            ))}
-          </Box>
-          <Box>
-            <TextField
-              label="Backstory"
-              name="backstory"
-              value={formData.backstory}
+            required
+            sx={{ flex: 1 }}
+          />
+          <FormControl required sx={{ flex: 1 }}>
+            <InputLabel id="class-label">Class</InputLabel>
+            <Select
+              labelId="class-label"
+              name="wizard_class_id"
+              value={formData.wizard_class_id}
               onChange={handleChange}
-              multiline
-              minRows={5}
-              placeholder={"Your story begins..."}
-              sx={{ width: { xs: "100%", md: "80%" } }}
-            />
-          </Box>
-        </>
-      ) : null}
-      <Box>
-        <Button onClick={handleCancel} variant="outlined">
-          Cancel
-        </Button>
-        <Button type="submit" variant="outlined">
-          Submit
-        </Button>
+              label="Class"
+              displayEmpty
+            >
+              <MenuItem value={0} disabled>
+                Select a Class
+              </MenuItem>
+              {referenceData.magic_school_data.map(
+                (schoolData: MagicSchool) => (
+                  <MenuItem
+                    key={schoolData.school_id}
+                    value={schoolData.school_id}
+                  >
+                    {schoolData.name}
+                  </MenuItem>
+                )
+              )}
+            </Select>
+          </FormControl>
+        </Box>
+        {formData.wizard_class_id ? (
+          <>
+            <Typography>Primary Spells</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 2,
+                margin: "auto",
+                flexWrap: "wrap",
+              }}
+            >
+              {[0, 1, 2].map((index) => (
+                <FormControl key={index} required>
+                  <InputLabel id="spell-label">{`${selectedSchoolName} Spell ${
+                    index + 1
+                  }`}</InputLabel>
+                  <Select
+                    labelId="spell-label"
+                    name={`updatePrimarySpellIds-${index}`}
+                    value={formData.primarySpellIds[index]}
+                    onChange={handleChange}
+                    sx={{ minWidth: 200 }}
+                    label={`${selectedSchoolName} Spell ${index + 1}`}
+                    displayEmpty
+                  >
+                    <MenuItem value="0" disabled selected>
+                      --
+                    </MenuItem>
+                    {formData.wizard_class_id &&
+                      referenceData.spell_data
+                        .filter(
+                          (spell: SpellType) =>
+                            spell.school_id === formData.wizard_class_id
+                        )
+                        .map((spell: SpellType) => (
+                          <MenuItem
+                            key={spell.spell_id}
+                            value={spell.spell_id}
+                            disabled={
+                              formData.primarySpellIds.includes(
+                                spell.spell_id
+                              ) &&
+                              formData.primarySpellIds[index] !== spell.spell_id
+                            }
+                          >
+                            {spell.name}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              ))}
+            </Box>
+
+            <Typography>Aligned Spells</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                gap: 2,
+                margin: "auto",
+              }}
+            >
+              {alignedSchools.map((schoolData: MagicSchool) => (
+                <FormControl key={schoolData.school_id} required>
+                  <InputLabel id="spell-label">{`${schoolData.name} Spell`}</InputLabel>
+                  <Select
+                    labelId="spell-label"
+                    name={`updateAlignedSpellIds-${alignedSchools.indexOf(
+                      schoolData
+                    )}`}
+                    value={
+                      formData.alignedSpellIds[
+                        alignedSchools.indexOf(schoolData)
+                      ]
+                    }
+                    onChange={handleChange}
+                    sx={{ minWidth: 200 }}
+                    label={`${schoolData.name} Spell`}
+                    displayEmpty
+                  >
+                    <MenuItem value={0} disabled>
+                      --
+                    </MenuItem>
+                    {formData.wizard_class_id &&
+                      referenceData.spell_data
+                        .filter(
+                          (spell: SpellType) =>
+                            spell.school_id === schoolData.school_id
+                        )
+                        .map((spell: SpellType) => (
+                          <MenuItem key={spell.spell_id} value={spell.spell_id}>
+                            {spell.name}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              ))}
+            </Box>
+
+            <Typography>Neutral Spells</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 2,
+                margin: "auto",
+              }}
+            >
+              {[0, 1].map((index) => (
+                <FormControl key={`neutral-${index}`} required>
+                  <InputLabel id="spell-label">
+                    Neutral Spell {index + 1}
+                  </InputLabel>
+                  <Select
+                    labelId="spell-label"
+                    name={`updateNeutralSpellIds-${index}`}
+                    value={formData.neutralSpellIds[index]}
+                    onChange={handleChange}
+                    sx={{ minWidth: 200 }}
+                    label={`Neutral Spell ${index + 1}`}
+                    displayEmpty
+                  >
+                    <MenuItem value={0} disabled>
+                      --
+                    </MenuItem>
+                    {formData.wizard_class_id &&
+                      referenceData.spell_data
+                        .filter((spell: SpellType) => {
+                          const schoolIdArray = neutralSchools.map(
+                            (school: MagicSchool) => school.school_id
+                          );
+                          return schoolIdArray.includes(spell.school_id);
+                        })
+                        .map((spell: SpellType) => (
+                          <MenuItem
+                            key={spell.spell_id}
+                            value={spell.spell_id}
+                            disabled={
+                              formData.neutralSpellIds.includes(
+                                spell.spell_id
+                              ) &&
+                              formData.neutralSpellIds[index] !== spell.spell_id
+                            }
+                          >
+                            {spell.name}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              ))}
+            </Box>
+            <Box>
+              <TextField
+                label="Backstory"
+                name="backstory"
+                value={formData.backstory}
+                onChange={handleChange}
+                multiline
+                minRows={5}
+                placeholder={"Your story begins..."}
+                sx={{ width: { xs: "100%", md: "80%" } }}
+              />
+            </Box>
+          </>
+        ) : null}
+        <Box sx={{ margin: "auto", display: "flex", gap: 2 }}>
+          <Button onClick={handleCancel} variant="outlined" color="error">
+            Cancel
+          </Button>
+          <Button type="submit" variant="outlined">
+            Submit
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </Paper>
   );
 }
 

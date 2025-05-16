@@ -3,13 +3,13 @@ import { createContext, useContext, useState } from "react";
 const WarbandDataContext = createContext();
 
 export const WarbandDataProvider = ({ children }) => {
-  const [currWizard, setCurrWizard] = useState(null);
+  const [currentWizard, setCurrentWizard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   return (
     <WarbandDataContext.Provider
-      value={{ currWizard, setCurrWizard, loading, error }}
+      value={{ currentWizard, setCurrentWizard, loading, error }}
     >
       {children}
     </WarbandDataContext.Provider>

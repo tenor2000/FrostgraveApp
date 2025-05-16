@@ -4,7 +4,7 @@ import { useAuthData } from "../../context/AuthContext";
 import { postLogin } from "../../services/postRequests";
 import { fetchUserData } from "../../services/fetchRequests";
 import type { User } from "../../types/UserTypes";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { setToken } from "../../services/authToken";
 
 export default function Login() {
@@ -33,37 +33,39 @@ export default function Login() {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleLogin}
-      sx={{ maxWidth: "400px", margin: "auto" }}
-    >
-      <Typography variant="h2">Login</Typography>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <Box sx={{ margin: "10px" }}>
-        <TextField
-          label="Username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+    <Paper sx={{ margin: 2, padding: 2 }}>
+      <Box
+        component="form"
+        onSubmit={handleLogin}
+        sx={{ maxWidth: "400px", margin: "auto" }}
+      >
+        <Typography variant="h2">Login</Typography>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Box sx={{ margin: "10px" }}>
+          <TextField
+            label="Username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </Box>
+        <Box sx={{ margin: "10px" }}>
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </Box>
+        <Button type="submit" variant="outlined">
+          Login
+        </Button>
+        <Typography sx={{ marginTop: "10px" }}>
+          Don't have an account? <Link to="/users/register">Register</Link>
+        </Typography>
       </Box>
-      <Box sx={{ margin: "10px" }}>
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </Box>
-      <Button type="submit" variant="outlined">
-        Login
-      </Button>
-      <Typography sx={{ marginTop: "10px" }}>
-        Don't have an account? <Link to="/users/register">Register</Link>
-      </Typography>
-    </Box>
+    </Paper>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from "react";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Paper } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -71,94 +71,96 @@ export default function Register() {
   };
 
   return (
-    <form
-      onSubmit={handleRegister}
-      style={{ maxWidth: "400px", margin: "auto" }}
-    >
-      <h2>Register</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <Box>
-        <TextField
-          name="firstname"
-          label="First Name"
-          value={newUser.firstname}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-      </Box>
-      <Box>
-        <TextField
-          name="lastname"
-          label="Last Name"
-          value={newUser.lastname}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-        />
-      </Box>
-      <Box>
-        <TextField
-          name="username"
-          label="Username"
-          value={newUser.username}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          required
-        />
-      </Box>
-      <Box>
-        <TextField
-          type="email"
-          name="email"
-          label="Email"
-          value={newUser.email}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          required
-        />
-      </Box>
-      <Box>
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          value={newUser.password}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          required
-        />
-      </Box>
-      <Box>
-        <TextField
-          type="password"
-          name="confirmpw"
-          label="Confirm Password"
-          value={newUser.confirmpw}
-          onChange={handleChange}
-          margin="normal"
-          fullWidth
-          required
-        />
-      </Box>
-      <Box>
-        <p>
-          Already have an account? <Link to="/users/login">Login</Link>
-        </p>
-      </Box>
-      {/* <div>
+    <Paper sx={{ margin: 2, padding: 2 }}>
+      <form
+        onSubmit={handleRegister}
+        style={{ maxWidth: "400px", margin: "auto" }}
+      >
+        <h2>Register</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Box>
+          <TextField
+            name="firstname"
+            label="First Name"
+            value={newUser.firstname}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+          />
+        </Box>
+        <Box>
+          <TextField
+            name="lastname"
+            label="Last Name"
+            value={newUser.lastname}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+          />
+        </Box>
+        <Box>
+          <TextField
+            name="username"
+            label="Username"
+            value={newUser.username}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+        </Box>
+        <Box>
+          <TextField
+            type="email"
+            name="email"
+            label="Email"
+            value={newUser.email}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+        </Box>
+        <Box>
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            value={newUser.password}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+        </Box>
+        <Box>
+          <TextField
+            type="password"
+            name="confirmpw"
+            label="Confirm Password"
+            value={newUser.confirmpw}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
+            required
+          />
+        </Box>
+        <Box>
+          <p>
+            Already have an account? <Link to="/users/login">Login</Link>
+          </p>
+        </Box>
+        {/* <div>
         <p>
           {newUser.firstname} {newUser.lastname} {newUser.username}
           {newUser.email} {newUser.password} {newUser.confirmpw}
         </p>
       </div> */}
-      <Button type="submit" variant="outlined">
-        Register
-      </Button>
-    </form>
+        <Button type="submit" variant="outlined">
+          Register
+        </Button>
+      </form>
+    </Paper>
   );
 }
 

@@ -16,16 +16,16 @@ import { useAuthData } from "../../context/AuthContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteWizard } from "../../services/deleteRequests";
 
-export default function SelectWiz({ warbandData }) {
-  const { referenceData, loading, error } = useReferenceData();
-  const { currWizard, setCurrWizard } = useWarbandData();
-  const { refreshData } = useAuthData();
+export default function SelectWiz() {
+  const { referenceData } = useReferenceData();
+  const { currentWizard, setCurrentWizard } = useWarbandData();
+  const { refreshData, warbandData, loading, error } = useAuthData();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
   const onDeleteWizard = (wizard_id) => {
-    setCurrWizard(null);
+    setCurrentWizard(null);
 
     deleteWizard(wizard_id);
     refreshData();
@@ -42,7 +42,7 @@ export default function SelectWiz({ warbandData }) {
       {warbandData
         .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
         .map((wizard) => {
-          const isSelected = currWizard?._id === wizard._id;
+          const isSelected = currentWizard?._id === wizard._id;
           return (
             <Box
               key={wizard._id}
@@ -51,15 +51,19 @@ export default function SelectWiz({ warbandData }) {
                 alignItems: "center",
                 width: "100%",
                 maxWidth: "400px",
+                border: "1px solid",
                 borderRadius: 2,
-                boxShadow: 1,
+
                 borderColor: isSelected ? "blue" : "gray",
                 my: 1,
+                backgroundColor: isSelected
+                  ? "rgba(0, 0, 0, 0.8)"
+                  : "rgba(0, 0, 0, 0.5)",
               }}
               variant="outlined"
             >
               <ListItemButton
-                onClick={() => setCurrWizard(wizard)}
+                onClick={() => setCurrentWizard(wizard)}
                 sx={{ flexGrow: 1 }}
               >
                 <ListItemAvatar>
@@ -67,12 +71,12 @@ export default function SelectWiz({ warbandData }) {
                     {wizard.name[0]}
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText
-                  primary={wizard.name}
-                  secondary={`Level ${wizard.level} ${
-                    getSchoolFromId(wizard.wizard_class_id, referenceData)?.name
-                  }`}
-                />
+                <ListItemText>
+                  {wizard.name}
+                  <br />
+                  Level {wizard.level} -{" "}
+                  {getSchoolFromId(wizard.wizard_class_id, referenceData).name}
+                </ListItemText>
               </ListItemButton>
               <IconButton
                 // edge="end"
@@ -94,6 +98,7 @@ export default function SelectWiz({ warbandData }) {
           minWidth: "400px",
           boxShadow: 1,
           my: 1,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}
       >
         <ListItemAvatar>
