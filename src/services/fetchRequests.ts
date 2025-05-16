@@ -30,6 +30,7 @@ export const fetchWarbandsData = async (user_id: string) => {
     },
   });
   const warbandData = response.data;
+  console.log("Fetching warband data for user:", warbandData);
   // console.log(warbandData);
   return warbandData;
 };
