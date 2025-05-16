@@ -39,10 +39,21 @@ export default function SearchBar({
         endAdornment: (
           <InputAdornment position="end">
             <IconButton onClick={clearSearch}>
-              <CancelIcon />
+              <CancelIcon sx={{ color: "white" }} />
             </IconButton>
           </InputAdornment>
         ),
+      }}
+      sx={{
+        "& .MuiOutlinedInput-root": {
+          color: "white",
+          "& fieldset": {
+            borderColor: "white",
+          },
+          "&:hover fieldset": {
+            borderColor: "white",
+          },
+        },
       }}
     />
   );

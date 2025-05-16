@@ -61,7 +61,7 @@ export default function Profile() {
   };
 
   return (
-    <Paper sx={{ margin: 2, padding: 2 }}>
+    <Paper sx={{ margin: 2, padding: 2, width: "30%", mx: "auto" }}>
       <Typography variant="h5">User Profile</Typography>
 
       {!isEditing ? (

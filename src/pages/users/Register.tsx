@@ -71,7 +71,7 @@ export default function Register() {
   };
 
   return (
-    <Paper sx={{ margin: 2, padding: 2 }}>
+    <Paper sx={{ margin: 2, padding: 2, width: "40%", mx: "auto" }}>
       <form
         onSubmit={handleRegister}
         style={{ maxWidth: "400px", margin: "auto" }}

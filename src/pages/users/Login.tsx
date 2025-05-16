@@ -33,7 +33,7 @@ export default function Login() {
   };
 
   return (
-    <Paper sx={{ margin: 2, padding: 2 }}>
+    <Paper sx={{ margin: 2, padding: 2, width: "30%", mx: "auto" }}>
       <Box
         component="form"
         onSubmit={handleLogin}
