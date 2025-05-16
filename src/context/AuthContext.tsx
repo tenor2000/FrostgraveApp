@@ -6,12 +6,12 @@ import { fetchUserData, fetchWarbandsData } from "../services/fetchRequests";
 
 type AuthContextType = {
   user: User | null;
-  warbandData: any;
+  warbandData: any | null;
   setUser: (user: User | null) => void;
   loading: boolean;
   refreshData: () => void;
   logout: () => void;
-  error: any;
+  error: any | null;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (err) {
         console.error("Failed to fetch user with token:", err);
         removeToken();
-        setError(err.message);
+        setError(err?.message || "Unknown error");
         setUser(null);
       } finally {
         setLoading(false);
