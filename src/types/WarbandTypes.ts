@@ -94,3 +94,8 @@ export type Apprentice = {
     health: number;
   };
 };
+
+export type ApprenticeCreation = {
+  wizard_id: string;
+  name: string;
+};
