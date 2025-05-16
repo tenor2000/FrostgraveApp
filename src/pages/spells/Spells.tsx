@@ -6,6 +6,7 @@ import {
   Box,
   Pagination,
   Stack,
+  Paper,
   Tab,
   Tabs,
   useMediaQuery,
@@ -141,17 +142,6 @@ export default function Spells() {
           setSearchText={setSearchTerm}
           setPaginate={setPage}
         />
-        {itemsPerPage < spellData.length && (
-          <Stack spacing={2}>
-            <Pagination
-              count={Math.ceil(spellData.length / itemsPerPage)}
-              page={page}
-              onChange={handlePageChange}
-              variant="outlined"
-              shape="rounded"
-            />
-          </Stack>
-        )}
       </Box>
       <Box>
         {paginatedSpells.map((spell: SpellType) => (
@@ -160,6 +150,35 @@ export default function Spells() {
           </BasicAccordian>
         ))}
       </Box>
+      {itemsPerPage < spellData.length && (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Stack
+            spacing={2}
+            sx={{
+              padding: 2,
+              borderRadius: 2,
+            }}
+          >
+            <Pagination
+              count={Math.ceil(spellData.length / itemsPerPage)}
+              page={page}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+              color="secondary"
+              sx={{
+                button: {
+                  color: "white",
+                  borderColor: "white",
+                },
+                ".Mui-selected": {
+                  color: "white",
+                },
+              }}
+            />
+          </Stack>
+        </Box>
+      )}
     </>
   );
 }

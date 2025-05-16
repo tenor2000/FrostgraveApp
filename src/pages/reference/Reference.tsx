@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import { useNavigate } from "react-router-dom";
-import { Box, Tab, Tabs, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import ArmorComponent from "./Armor";
 import CreaturesComponent from "./Creature";
 import SoldiersComponent from "./Soldier";
@@ -96,7 +96,16 @@ export default function Reference() {
         {refType ? (
           components[refType.split("_").slice(0, -1).join("_")]
         ) : (
-          <Box>All</Box>
+          <Box>
+            <img
+              src="https://www.ospreypublishing.com/media/_osprey-blog-legacy/FGV_Minis.jpg"
+              alt="Frostgrave pics"
+              style={{ height: "60vh", width: "auto", margin: "25px" }}
+            />
+            <Typography variant="h4">
+              Please Select a Reference Type to View
+            </Typography>
+          </Box>
         )}
       </Box>
     </>

@@ -67,11 +67,24 @@ export default function ApprenticePage() {
   return (
     <Box sx={{ margin: "auto", textAlign: "center", padding: "1rem" }}>
       {!apprentice && !isHiring && (
-        <Box>
-          <Typography>{currentWizard.name} has no Apprentice.</Typography>
-          <Button onClick={() => setIsHiring(true)} variant="outlined">
-            Hire Apprentice
-          </Button>
+        <Box
+          sx={{
+            margin: "auto",
+            textAlign: "center",
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          <Typography variant="h4">
+            {currentWizard.name} has no Apprentice.
+          </Typography>
+          <Box>
+            <Button onClick={() => setIsHiring(true)} variant="contained">
+              Hire An Apprentice
+            </Button>
+          </Box>
         </Box>
       )}
       {!apprentice && isHiring && (
@@ -97,7 +110,7 @@ export default function ApprenticePage() {
                 console.log("fire Apprentice");
                 fireApprentice(apprentice);
               }}
-              variant="outlined"
+              variant="contained"
               color="error"
             >
               Fire
