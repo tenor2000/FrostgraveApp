@@ -15,7 +15,7 @@ export default function Warbands() {
   const [tabValue, setTabValue] = useState(0);
   const { warbandData } = useAuthData();
   const { section } = useParams<{ section: string }>();
-  const { currWizard, setCurrWizard } = useWarbandData();
+  const { currentWizard, setCurrentWizard } = useWarbandData();
 
   if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error.message}</p>;
@@ -77,14 +77,12 @@ export default function Warbands() {
         </Box>
       </Box>
       <Box sx={{ paddingTop: "1rem" }}>
-        {!section && <SelectWiz warbandData={warbandData} />}
-        {section === "wizard" && <WizardPage currentWizard={currWizard} />}
-        {section === "spellbook" && <Spellbook currentWizard={currWizard} />}
-        {section === "apprentice" && (
-          <ApprenticePage currentWizard={currWizard} />
-        )}
+        {!section && <SelectWiz />}
+        {section === "wizard" && <WizardPage currentWizard={currentWizard} />}
+        {section === "spellbook" && <Spellbook currentWizard={currentWizard} />}
+        {section === "apprentice" && <ApprenticePage />}
         {section === "followers" && (
-          <FollowersPage currentWizard={currWizard} />
+          <FollowersPage currentWizard={currentWizard} />
         )}
       </Box>
     </Box>
