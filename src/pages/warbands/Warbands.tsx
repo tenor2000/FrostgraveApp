@@ -78,7 +78,7 @@ export default function Warbands() {
       </Box>
       <Box sx={{ paddingTop: "1rem" }}>
         {!section && <SelectWiz />}
-        {section === "wizard" && <WizardPage currentWizard={currentWizard} />}
+        {section === "wizard" && <WizardPage />}
         {section === "spellbook" && <Spellbook currentWizard={currentWizard} />}
         {section === "apprentice" && <ApprenticePage />}
         {section === "followers" && (
