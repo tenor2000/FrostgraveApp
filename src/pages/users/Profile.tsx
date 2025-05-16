@@ -1,16 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Paper,
-} from "@mui/material";
+import { Box, Button, TextField, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { putUser } from "../../services/putRequests";
 import { deleteUser } from "../../services/deleteRequests";
@@ -20,20 +9,45 @@ export default function Profile() {
   const { user, refreshData, logout, loading, error } = useAuthData();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ ...user });
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const navigate = useNavigate();
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+  if (!user) {
+    return <p>No user data.</p>;
+  }
+
+  console.log(user);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
-    setFormData({ name: user?.name || "", email: user?.email || "" });
+    setFormData({
+      _id: user?._id || "",
+      firstname: user?.firstname || "",
+      lastname: user?.lastname || "",
+      username: user?.username || "",
+      email: user?.email || "",
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await putUser(formData);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsEditing(false);
+      refreshData();
+    }
   };
 
   const handleDelete = async () => {
@@ -41,57 +55,42 @@ export default function Profile() {
       await deleteUser(user._id);
       logout();
       navigate("/");
-    } catch {
-    } finally {
-      setOpenDeleteDialog(false);
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await putUser(localStorage.getItem("accessTokenFG") || "", formData);
-      // If you have a way to update user in context, use that here:
-      // setUser(res.data);
-    } catch {
-    } finally {
-      setIsEditing(false);
-      refreshData();
-    }
-  };
-
-  if (loading) return <div className="p-4">Loading...</div>;
-  if (error) return <div className="p-4 text-red-500">{error}</div>;
-  if (!user) return <div className="p-4">No user data.</div>;
 
   return (
-    <Box maxWidth="sm" mx="auto" mt={10} component={Paper} p={4} elevation={3}>
-      <Typography variant="h5" gutterBottom>
-        Your Profile
-      </Typography>
+    <Paper sx={{ margin: 2, padding: 2 }}>
+      <Typography variant="h5">User Profile</Typography>
 
       {!isEditing ? (
         <>
           <Typography>
-            <strong>Name:</strong> {user.name}
+            <strong>First Name:</strong> {user.firstname}
+          </Typography>
+          <Typography>
+            <strong>Last Name:</strong> {user.lastname}
+          </Typography>
+          <Typography>
+            <strong>Username:</strong> {user.username}
           </Typography>
           <Typography>
             <strong>Email:</strong> {user.email}
           </Typography>
 
-          <Box mt={3} display="flex" gap={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleEditToggle}
-            >
+          <Box
+            sx={{
+              marginTop: 2,
+              display: "flex",
+              justifyContent: "center",
+              gap: 1,
+            }}
+          >
+            <Button variant="contained" onClick={handleEditToggle}>
               Edit
             </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => setOpenDeleteDialog(true)}
-            >
+            <Button variant="outlined" color="error" onClick={handleDelete}>
               Delete Account
             </Button>
           </Box>
@@ -100,9 +99,23 @@ export default function Profile() {
         <form onSubmit={handleUpdate}>
           <Box display="flex" flexDirection="column" gap={2}>
             <TextField
-              label="Name"
-              name="name"
-              value={formData.name}
+              label="First Name"
+              name="firstname"
+              value={formData.firstname}
+              onChange={handleInputChange}
+              required
+            />
+            <TextField
+              label="Last Name"
+              name="lastname"
+              value={formData.lastname}
+              onChange={handleInputChange}
+              required
+            />
+            <TextField
+              label="Username"
+              name="username"
+              value={formData.username}
               onChange={handleInputChange}
               required
             />
@@ -114,7 +127,7 @@ export default function Profile() {
               onChange={handleInputChange}
               required
             />
-            <Box display="flex" gap={2} mt={2}>
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
               <Button type="submit" variant="contained" color="success">
                 Save Changes
               </Button>
@@ -125,26 +138,6 @@ export default function Profile() {
           </Box>
         </form>
       )}
-
-      {/* Delete Confirmation Modal */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-      >
-        <DialogTitle>Delete Account?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This action is irreversible. Are you sure you want to delete your
-            account?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-          <Button onClick={handleDelete} color="error">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+    </Paper>
   );
 }
