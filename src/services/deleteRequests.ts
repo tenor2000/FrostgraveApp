@@ -27,6 +27,7 @@ export const deleteFollower = async (follower_id: string) => {
 };
 
 export const deleteApprentice = async (apprentice_id: string) => {
+  console.log("Deleting apprentice:", apprentice_id);
   return axios.delete(`${backendUrl}/warbands/apprentices/${apprentice_id}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
