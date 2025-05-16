@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useReferenceData } from "../../context/ReferenceDataContext";
 import BasicSpellCard from "../spells/BasicSpellCard";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Paper } from "@mui/material";
 import { getSchoolFromId } from "../../utilFunctions/getSchoolFromId";
 import type { SpellType } from "../../types/ReferenceTypes";
 import { getSpellFromId } from "../../utilFunctions/getSpellFromId";
@@ -63,7 +63,7 @@ export default function Spellbook({ currentWizard }) {
   }
 
   return (
-    <>
+    <Box sx={{ margin: "1rem", padding: "1rem" }}>
       {displaySpell && (
         <Box sx={{ my: 2, display: "flex", justifyContent: "center" }}>
           <BasicSpellCard
@@ -74,11 +74,18 @@ export default function Spellbook({ currentWizard }) {
         </Box>
       )}
       <Typography variant="h5">{schoolName} Spells</Typography>
-      <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
+      <Box
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          margin: "1rem",
+          gap: "1rem",
+        }}
+      >
         {primarySpells.map((spell: SpellType) => (
           <Button
             onClick={() => setDisplaySpell(spell)}
-            variant="outlined"
+            variant="contained"
             key={spell._id}
           >
             {spell.name}
@@ -86,11 +93,18 @@ export default function Spellbook({ currentWizard }) {
         ))}
       </Box>
       <Typography variant="h5">Aligned Spells</Typography>
-      <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
+      <Box
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          margin: "1rem",
+          gap: "1rem",
+        }}
+      >
         {alignedSpells.map((spell: SpellType) => (
           <Button
             onClick={() => setDisplaySpell(spell)}
-            variant="outlined"
+            variant="contained"
             key={spell._id}
           >
             {spell.name}
@@ -98,11 +112,18 @@ export default function Spellbook({ currentWizard }) {
         ))}
       </Box>
       <Typography variant="h5">Neutral Spells</Typography>
-      <Box sx={{ justifyContent: "center", display: "flex", margin: "1rem" }}>
+      <Box
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          margin: "1rem",
+          gap: "1rem",
+        }}
+      >
         {neutralSpells.map((spell: SpellType) => (
           <Button
             onClick={() => setDisplaySpell(spell)}
-            variant="outlined"
+            variant="contained"
             key={spell._id}
           >
             {spell.name}
@@ -118,7 +139,7 @@ export default function Spellbook({ currentWizard }) {
             {opposedSpells.map((spell: SpellType) => (
               <Button
                 onClick={() => setDisplaySpell(spell)}
-                variant="outlined"
+                variant="contained"
                 key={spell._id}
               >
                 {spell.name}
@@ -127,6 +148,6 @@ export default function Spellbook({ currentWizard }) {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
 }
