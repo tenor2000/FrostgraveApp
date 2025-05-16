@@ -17,7 +17,7 @@ import { useAuthData } from "../context/AuthContext";
 const pages = ["Reference", "Spells", "Warbands", "Campaigns"];
 const settings = [
   { page: "Profile", route: "users/profile" },
-  { page: "Dashboard", route: "users/dashboard" },
+  // { page: "Dashboard", route: "users/dashboard" },
 ];
 
 function NavBar() {
