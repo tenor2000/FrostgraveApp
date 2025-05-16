@@ -8,11 +8,16 @@ import deriveApprenticeStats from "../../utilFunctions/deriveApprenticeStats";
 import { useAuthData } from "../../context/AuthContext";
 import { postNewApprentice } from "../../services/postRequests";
 import { deleteApprentice } from "../../services/deleteRequests";
+import { useWarbandData } from "../../context/WarbandDataContext";
+import { useNavigate } from "react-router-dom";
 
-export default function ApprenticePage({ currentWizard }) {
+export default function ApprenticePage() {
   const { referenceData, loading, error } = useReferenceData();
-  const { refreshData } = useAuthData();
+  const { refreshData, warbandData } = useAuthData();
+  const { currentWizard, setCurrentWizard } = useWarbandData();
   const [isHiring, setIsHiring] = useState(false);
+
+  const navigate = useNavigate();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -30,8 +35,6 @@ export default function ApprenticePage({ currentWizard }) {
       ? deriveApprenticeStats(currentWizard.apprentices[0], currentWizard)
       : null;
 
-  console.log(apprentice);
-
   const handleHireApprentice = async (apprentice) => {
     // WIP
     const newApprentice = {
@@ -41,14 +44,24 @@ export default function ApprenticePage({ currentWizard }) {
     };
     await postNewApprentice(newApprentice);
     refreshData();
+    navigate("/warbands");
     setIsHiring(false);
   };
 
-  const fireApprentice = async (apprentice) => {
+  const fireApprentice = (apprentice) => {
     // WIP
+    console.log("fireApprentice Triggers!");
 
-    await deleteApprentice(apprentice._id);
-    refreshData();
+    try {
+      setCurrentWizard(null);
+      deleteApprentice(apprentice._id);
+      console.log("Apprentice deleted");
+
+      refreshData();
+      navigate("/warbands");
+    } catch (err: any) {
+      console.error("Error in fireApprentice:", err);
+    }
   };
 
   return (
@@ -63,7 +76,9 @@ export default function ApprenticePage({ currentWizard }) {
       )}
       {!apprentice && isHiring && (
         <Box>
-          <Typography>{currentWizard.name} is hiring an Apprentice.</Typography>
+          <Typography variant="h4">
+            {currentWizard.name} is hiring an Apprentice.
+          </Typography>
           <DisplayApprentices
             currentWizard={currentWizard}
             handleHireApprentice={handleHireApprentice}
@@ -78,7 +93,10 @@ export default function ApprenticePage({ currentWizard }) {
           <StatCard wizard={apprentice} />
           <Box>
             <Button
-              onClick={() => fireApprentice(apprentice)}
+              onClick={() => {
+                console.log("fire Apprentice");
+                fireApprentice(apprentice);
+              }}
               variant="outlined"
               color="error"
             >
